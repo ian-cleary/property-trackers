@@ -403,15 +403,15 @@
   <style>
     /* Responsive refinement layer: presentation only. */
     :root {
-      --bg: #f1f4f2;
+      --bg: #eef2ef;
       --paper: #fff;
-      --ink: #16211f;
-      --muted: #52615e;
-      --line: #d2dcd8;
-      --soft: #e9efec;
-      --accent: #096e67;
+      --ink: #17201f;
+      --muted: #5b6866;
+      --line: #cbd5d1;
+      --soft: #e5ece8;
+      --accent: #086b66;
       --accent-ink: #fff;
-      --accent-soft: #dceeea;
+      --accent-soft: #d9ebe7;
       --amber: #8f570d;
       --amber-soft: #f8ead3;
       --danger: #963d35;
@@ -443,7 +443,7 @@
     html { overflow-x: clip; }
     body {
       overflow-wrap: anywhere;
-      font-family: Aptos, "Avenir Next", Avenir, "Segoe UI", sans-serif;
+      font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
       font-size: 16px;
       line-height: 1.5;
       text-rendering: optimizeLegibility;
@@ -464,7 +464,7 @@
     }
     .gate-mark { margin-bottom: 20px; }
     .gate h1 {
-      font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      font-family: Georgia, "Times New Roman", serif;
       font-size: clamp(30px, 6vw, 40px);
       line-height: 1.08;
     }
@@ -482,7 +482,7 @@
     }
     .mast h1 {
       max-width: 830px;
-      font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      font-family: Georgia, "Times New Roman", serif;
       font-size: clamp(42px, 5vw, 64px);
       line-height: 1.02;
       letter-spacing: -.045em;
@@ -557,7 +557,7 @@
       box-shadow: 0 6px 22px rgba(25, 47, 42, .04);
     }
     .metric-value {
-      font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      font-family: Georgia, "Times New Roman", serif;
       font-size: 31px;
     }
     .metric-label { margin-top: 8px; line-height: 1.3; }
@@ -586,7 +586,7 @@
     }
     .listing h3 {
       max-width: 700px;
-      font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      font-family: Georgia, "Times New Roman", serif;
       font-size: clamp(24px, 2.4vw, 31px);
       line-height: 1.12;
       letter-spacing: -.025em;
@@ -829,10 +829,10 @@
       font-weight: 750;
       cursor: pointer;
     }
-    .leaflet-container { font-family: Aptos, "Avenir Next", Avenir, "Segoe UI", sans-serif; }
+    .leaflet-container { font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif; }
     .leaflet-popup-content { margin: 14px 16px; line-height: 1.45; }
     .leaflet-popup-content strong { display: block; margin-bottom: 4px; font-size: 14px; }
-    .leaflet-popup-content a { color: #096e67; font-weight: 800; }
+    .leaflet-popup-content a { color: #086b66; font-weight: 800; }
     .leaflet-control-attribution { font-size: 10px; }
     .leaflet-touch .leaflet-bar a {
       width: 44px;
@@ -888,7 +888,7 @@
         <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9l8-5 8 5v11"/><path d="M8 20v-6h8v6"/></svg>
       </div>
       <h1 id="gate-title">Open the shortlist</h1>
-      <p>Thirty-seven current Western Isles homes, updated 28 September 2026, with the full scorecard, planning checks, evidence and map.</p>
+      <p>Thirty-six current Western Isles homes, updated 28 September 2026, with the full scorecard, planning checks, evidence and map.</p>
       <form id="gate-form" novalidate>
         <label class="field-label" for="passcode">Passcode</label>
         <div class="gate-row">
@@ -906,7 +906,7 @@
         <span><i class="scope-dot"></i> North Uist prioritised</span>
         <span>Berneray · Benbecula · Grimsay</span>
       </div>
-      <h1>Thirty-seven homes worth a closer look.</h1>
+      <h1>Thirty-six homes worth a closer look.</h1>
       <p class="mast-copy">A focused shortlist for space, quiet roads and serious workshop potential — with two-bedroom homes kept in the running.</p>
       <div class="snapshot-note">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
@@ -952,7 +952,7 @@
 
       <section class="content">
         <div class="metrics" aria-label="Snapshot summary">
-          <div class="metric"><span class="metric-value" id="metric-count">37</span><span class="metric-label">matching homes</span></div>
+          <div class="metric"><span class="metric-value" id="metric-count">36</span><span class="metric-label">matching homes</span></div>
           <div class="metric"><span class="metric-value" id="metric-budget">31</span><span class="metric-label">known within budget</span></div>
           <div class="metric"><span class="metric-value" id="metric-workshop">18</span><span class="metric-label">with workshop potential</span></div>
         </div>
@@ -982,7 +982,7 @@
         <div class="results-line">
           <h2>Shortlist</h2>
           <div class="results-tools">
-            <p id="results-label">37 properties</p>
+            <p id="results-label">36 properties</p>
             <button class="hidden-toggle" id="hidden-toggle" type="button" hidden>Show hidden (0)</button>
           </div>
         </div>
@@ -1019,6 +1019,8 @@
     "longitude": -7.24,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:52.968Z",
@@ -1060,6 +1062,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "partial",
     "planning_checked_at": "2026-09-26T06:37:47.776Z",
@@ -1101,6 +1105,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [
       {
         "decision_date": "28 Sep 2017",
@@ -1159,6 +1165,8 @@
     "longitude": -7.3204,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [
       {
         "decision_date": "2023-06-28",
@@ -1209,6 +1217,8 @@
     "longitude": -7.3736,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "partial",
     "planning_checked_at": "2026-09-26T06:37:47.645Z",
@@ -1250,6 +1260,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:52.994Z",
@@ -1291,6 +1303,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.062Z",
@@ -1332,6 +1346,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [
       {
         "decision_date": "11 Sep 2023",
@@ -1382,6 +1398,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "not_checked",
     "planning_checked_at": null,
@@ -1423,6 +1441,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:52.926Z",
@@ -1464,6 +1484,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:52.952Z",
@@ -1505,6 +1527,8 @@
     "longitude": -7.3573,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "partial",
     "planning_checked_at": "2026-09-26T06:37:47.580Z",
@@ -1546,6 +1570,8 @@
     "longitude": -7.4432,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.013Z",
@@ -1587,6 +1613,8 @@
     "longitude": -7.1638,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "partial",
     "planning_checked_at": "2026-09-26T06:37:47.662Z",
@@ -1628,6 +1656,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [
       {
         "decision_date": "07 Sep 2004",
@@ -1678,6 +1708,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.042Z",
@@ -1719,6 +1751,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [
       {
         "decision_date": "1997-03-26",
@@ -1769,6 +1803,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.104Z",
@@ -1810,6 +1846,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.090Z",
@@ -1851,6 +1889,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.076Z",
@@ -1892,6 +1932,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.029Z",
@@ -1933,6 +1975,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "not_checked",
     "planning_checked_at": null,
@@ -1974,6 +2018,8 @@
     "longitude": -7.4438,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-26T06:37:47.721Z",
@@ -2015,6 +2061,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.130Z",
@@ -2056,6 +2104,8 @@
     "longitude": -7.4282,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-26T06:37:47.704Z",
@@ -2097,6 +2147,8 @@
     "longitude": -7.3586,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-26T06:37:47.690Z",
@@ -2138,6 +2190,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "not_checked",
     "planning_checked_at": null,
@@ -2179,6 +2233,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:52.939Z",
@@ -2220,6 +2276,8 @@
     "longitude": -7.24,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "not_checked",
     "planning_checked_at": null,
@@ -2261,6 +2319,8 @@
     "longitude": -7.28,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:52.981Z",
@@ -2302,6 +2362,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "partial",
     "planning_checked_at": "2026-09-26T06:37:47.837Z",
@@ -2343,6 +2405,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "partial",
     "planning_checked_at": "2026-09-26T06:37:47.818Z",
@@ -2360,47 +2424,6 @@
     "title": "3-bedroom semi-detached house, Dunganichy, Balivanich, Isle of Benbecula",
     "workshop_notes": "No outbuildings mentioned.",
     "workshop_status": "none"
-  },
-  {
-    "bathrooms": 2,
-    "bedrooms": 2,
-    "condition_text": "unknown",
-    "description": "Croft tenancy assignation at 2B Hougharry including 2-bedroom house. Accommodation: lounge with open fire, two double bedrooms with built-in wardrobes, utility room, shower room off utility, and family bathroom. Services: electricity, septic tank, oil-fired central heating. Home report notes property was previously marketed with 2A Hougharry and land/outbuilding info is superseded.",
-    "dismissed": false,
-    "first_seen_at": "2026-09-17T11:51:50.673Z",
-    "flood_risk_low": true,
-    "garage_notes": null,
-    "has_garage": false,
-    "id": 35,
-    "image_url": null,
-    "island": "North Uist",
-    "isolation_level": "unknown",
-    "isolation_notes": "Supplied text does not describe separation from neighbouring houses.",
-    "land_acres": null,
-    "last_seen_at": "2026-09-17T11:51:50.673Z",
-    "latitude": 57.6,
-    "listing_url": "https://mail.uistproperty.co.uk/components/com_jomcomdev/files/2026/07/30/73-Sales-Schedule-2B_Hougharry.pdf",
-    "locality": "Hougharry",
-    "longitude": -7.28,
-    "midge_notes": null,
-    "midge_risk_low": true,
-    "planning_applications": [],
-    "planning_check_status": "not_checked",
-    "planning_checked_at": null,
-    "planning_notes": null,
-    "price_gbp": null,
-    "price_status": "tbc",
-    "raw_price_text": null,
-    "road_context": "unknown",
-    "road_notes": "No road position described in supplied text.",
-    "score": 48,
-    "sea_view": false,
-    "setting_notes": "Croft tenancy in Hougharry; no specific rural description in supplied text.",
-    "setting_rural": true,
-    "starred": false,
-    "title": "Assignation of Croft Tenancy 2B Hougharry, Isle of North Uist, HS6 5DL",
-    "workshop_notes": "No workshop, barn, shed or build potential described; home report notes land/outbuilding information out of date.",
-    "workshop_status": "unknown"
   },
   {
     "bathrooms": 1,
@@ -2425,6 +2448,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "not_checked",
     "planning_checked_at": null,
@@ -2466,6 +2491,8 @@
     "longitude": -7.31,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "checked",
     "planning_checked_at": "2026-09-28T06:10:53.117Z",
@@ -2507,6 +2534,8 @@
     "longitude": null,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "not_checked",
     "planning_checked_at": null,
@@ -2548,6 +2577,8 @@
     "longitude": null,
     "midge_notes": null,
     "midge_risk_low": true,
+    "ownership_notes": null,
+    "ownership_status": "not_stated",
     "planning_applications": [],
     "planning_check_status": "not_checked",
     "planning_checked_at": null,
