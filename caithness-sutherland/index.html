@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#edf0e9" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#111612" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,650&display=swap" rel="stylesheet" />
+  <title>Caithness &amp; Sutherland Property Tracker (Snapshot)</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #edf0e9;
+      --paper: #f8f8f3;
+      --paper-2: #e4e9df;
+      --ink: #182119;
+      --muted: #596358;
+      --faint: #7a8278;
+      --line: #c9d0c5;
+      --line-strong: #aeb8aa;
+      --green: #174c37;
+      --green-soft: #dce9df;
+      --rust: #a44724;
+      --amber: #a46a19;
+      --amber-soft: #f3e8cd;
+      --red: #a83b2f;
+      --red-soft: #f2deda;
+      --shadow: 0 16px 50px rgba(28, 42, 30, .08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111612;
+        --paper: #181f1a;
+        --paper-2: #202a22;
+        --ink: #eef2ea;
+        --muted: #b8c1b6;
+        --faint: #8e998e;
+        --line: #334039;
+        --line-strong: #4a584f;
+        --green: #a9d5bd;
+        --green-soft: #203d2f;
+        --rust: #e1825f;
+        --amber: #e1ad5e;
+        --amber-soft: #43351e;
+        --red: #ef8c7e;
+        --red-soft: #462925;
+        --shadow: 0 18px 56px rgba(0, 0, 0, .28);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 400 15px/1.5 "IBM Plex Sans", sans-serif;
+      overflow-wrap: anywhere;
+    }
+    button, input, select { font: inherit; }
+    button, select, input[type="range"] { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--rust) 55%, transparent);
+      outline-offset: 3px;
+    }
+    a { color: inherit; }
+    .shell { max-width: 1460px; margin: 0 auto; padding: max(24px, env(safe-area-inset-top)) 24px 64px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, .55fr);
+      gap: clamp(32px, 6vw, 100px);
+      align-items: end;
+      padding: clamp(34px, 6vw, 84px) 0 34px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .eyebrow { color: var(--rust); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+    h1, h2, h3 { font-family: "Newsreader", Georgia, serif; }
+    h1 { margin: 12px 0 14px; max-width: 830px; font-size: clamp(46px, 7.7vw, 106px); line-height: .88; letter-spacing: -.045em; font-weight: 650; }
+    .dek { max-width: 760px; margin: 0; color: var(--muted); font-size: clamp(16px, 2vw, 21px); line-height: 1.55; }
+    .hero-facts { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line-strong); }
+    .hero-fact { padding: 16px 0 12px; border-bottom: 1px solid var(--line); }
+    .hero-fact:nth-child(odd) { padding-right: 18px; border-right: 1px solid var(--line); }
+    .hero-fact:nth-child(even) { padding-left: 18px; }
+    .hero-fact strong { display: block; font: 650 clamp(30px, 4vw, 54px)/1 "Newsreader", Georgia, serif; letter-spacing: -.025em; }
+    .hero-fact span { color: var(--muted); font-size: 12px; }
+    .snapshot-note { display: flex; justify-content: space-between; gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .snapshot-note strong { color: var(--ink); font-weight: 600; }
+
+    .controls { position: sticky; top: 0; z-index: 20; margin: 24px 0 28px; padding: 14px; background: color-mix(in srgb, var(--paper) 93%, transparent); border: 1px solid var(--line); box-shadow: var(--shadow); backdrop-filter: blur(10px); }
+    .controls-main { display: grid; grid-template-columns: minmax(230px, 1.7fr) repeat(4, minmax(130px, .6fr)); gap: 10px; }
+    .field { min-width: 0; }
+    .field label { display: block; margin: 0 0 5px; color: var(--faint); font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .field input, .field select { width: 100%; min-height: 43px; border: 1px solid var(--line); border-radius: 0; background: var(--paper); color: var(--ink); padding: 9px 11px; }
+    .toggles { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 12px; }
+    .chip, .button {
+      min-height: 38px; border: 1px solid var(--line-strong); border-radius: 999px; background: transparent; color: var(--ink); padding: 7px 13px;
+    }
+    .chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: var(--paper); }
+    .chip small { color: inherit; opacity: .68; }
+    .controls-result { margin-left: auto; display: flex; align-items: center; gap: 10px; color: var(--muted); }
+    .controls-result strong { color: var(--ink); }
+
+    .workspace { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 34px; align-items: start; }
+    .rail { position: sticky; top: 146px; }
+    .rail section { padding: 0 0 22px; margin-bottom: 22px; border-bottom: 1px solid var(--line); }
+    .rail h2 { font-size: 24px; line-height: 1.05; margin: 0 0 8px; }
+    .rail p { margin: 0; color: var(--muted); font-size: 13px; }
+    .weight { margin-top: 14px; }
+    .weight-head { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 5px; font-size: 12px; }
+    .weight-head output { color: var(--rust); font-weight: 600; }
+    input[type="range"] { width: 100%; accent-color: var(--rust); }
+    .rail-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
+    .button { background: var(--paper); }
+    .button.primary { background: var(--green); color: var(--paper); border-color: var(--green); }
+    .button:disabled { opacity: .45; cursor: not-allowed; }
+    .brief-list { list-style: none; margin: 12px 0 0; padding: 0; }
+    .brief-list li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; padding: 7px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .brief-list li::before { content: "✓"; color: var(--green); font-weight: 600; }
+
+    .list-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; padding-bottom: 13px; border-bottom: 1px solid var(--line-strong); }
+    .list-head h2 { margin: 0; font-size: clamp(28px, 4vw, 46px); line-height: 1; }
+    .list-head span { color: var(--muted); font-size: 13px; text-align: right; }
+    .property-list { min-width: 0; }
+    .property {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr) 108px;
+      gap: 18px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    .rank { font: 500 25px/1 "Newsreader", Georgia, serif; color: var(--faint); font-variant-numeric: tabular-nums; }
+    .property-main { min-width: 0; }
+    .property-kicker { display: flex; flex-wrap: wrap; gap: 7px 14px; align-items: center; color: var(--muted); font-size: 12px; }
+    .source { color: var(--rust); font-weight: 600; }
+    .property h3 { margin: 7px 0 4px; font-size: clamp(25px, 3vw, 38px); line-height: 1.02; letter-spacing: -.015em; }
+    .facts { display: flex; flex-wrap: wrap; gap: 6px 16px; color: var(--muted); font-size: 13px; }
+    .facts strong { color: var(--ink); font-weight: 600; }
+    .description { margin: 14px 0 0; max-width: 840px; color: var(--muted); }
+    .evidence { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: 18px; background: var(--line); border: 1px solid var(--line); }
+    .evidence-item { min-width: 0; background: var(--paper); padding: 12px; }
+    .evidence-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .055em; }
+    .evidence-score { font-variant-numeric: tabular-nums; }
+    .evidence-item p { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.42; }
+    .level-good { color: var(--green); }
+    .level-warn { color: var(--amber); }
+    .level-poor { color: var(--red); }
+    .property-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
+    .text-action { padding: 4px 0; border: 0; background: transparent; color: var(--muted); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 4px; }
+    .text-action:hover { color: var(--ink); }
+    .listing-link { color: var(--rust); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+    .score-block { text-align: right; align-self: start; }
+    .score-block strong { display: block; font: 650 44px/1 "Newsreader", Georgia, serif; letter-spacing: -.03em; }
+    .score-block small { display: block; color: var(--muted); font-size: 11px; }
+    .score-line { width: 100%; height: 4px; margin-top: 9px; background: var(--line); }
+    .score-line i { display: block; height: 100%; background: currentColor; }
+    .detail { grid-column: 2 / -1; display: none; margin-top: 2px; padding: 17px; background: var(--paper-2); border-left: 4px solid var(--rust); }
+    .detail.open { display: block; }
+    .criteria-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px 22px; }
+    .criterion { min-width: 0; }
+    .criterion-top { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; font-weight: 600; }
+    .criterion-bar { height: 3px; background: var(--line); margin: 6px 0 5px; }
+    .criterion-bar i { display: block; height: 100%; background: currentColor; }
+    .criterion p { margin: 0; color: var(--muted); font-size: 11px; }
+    .empty { padding: 70px 0; text-align: center; color: var(--muted); }
+    .empty h3 { margin: 0 0 8px; color: var(--ink); font-size: 31px; }
+    .footer { margin-top: 54px; padding-top: 18px; border-top: 1px solid var(--line-strong); color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 1050px) {
+      .controls { position: static; }
+      .controls-main { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .field-search { grid-column: span 2; }
+      .workspace { grid-template-columns: 1fr; }
+      .rail { position: static; display: grid; grid-template-columns: 1fr 1.4fr; gap: 28px; border-bottom: 1px solid var(--line-strong); }
+      .rail section { border-bottom: 0; }
+      .weights-section { grid-row: span 2; }
+    }
+    @media (max-width: 740px) {
+      .shell { padding-left: 16px; padding-right: 16px; }
+      .hero { grid-template-columns: 1fr; padding-top: 34px; }
+      h1 { font-size: clamp(48px, 15vw, 76px); }
+      .snapshot-note { display: block; }
+      .snapshot-note span { display: block; margin-top: 4px; }
+      .controls-main { grid-template-columns: 1fr 1fr; }
+      .field-search { grid-column: 1 / -1; }
+      .toggles { gap: 6px; }
+      .controls-result { width: 100%; margin: 4px 0 0; justify-content: space-between; }
+      .rail { grid-template-columns: 1fr; gap: 0; }
+      .weights-section { grid-row: auto; }
+      .rail section { border-bottom: 1px solid var(--line); }
+      .list-head { align-items: flex-end; }
+      .property { grid-template-columns: 40px minmax(0, 1fr); gap: 12px; padding: 24px 0; }
+      .score-block { grid-column: 1; grid-row: 2; text-align: left; }
+      .score-block strong { font-size: 30px; }
+      .score-block small { display: none; }
+      .score-line { width: 34px; }
+      .property-main { grid-column: 2; grid-row: 1 / span 2; }
+      .evidence { grid-template-columns: 1fr; }
+      .detail { grid-column: 1 / -1; }
+      .criteria-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 430px) {
+      .controls-main { grid-template-columns: 1fr; }
+      .field-search { grid-column: auto; }
+      .hero-fact strong { font-size: 36px; }
+      .chip { padding-left: 10px; padding-right: 10px; }
+      .property { grid-template-columns: 34px minmax(0, 1fr); }
+      .property h3 { font-size: 27px; }
+      .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Caithness + Sutherland · dated shortlist</div>
+        <h1><span id="heroCount">—</span> recently refreshed homes.</h1>
+        <p class="dek">Move-in first. Space from neighbours. Safer roads for the cats. And either the workshop already exists, or there’s credible room to build it.</p>
+      </div>
+      <div class="hero-facts" aria-label="Snapshot summary">
+        <div class="hero-fact"><strong id="workshopCount">—</strong><span>strong workshop or plot cases</span></div>
+        <div class="hero-fact"><strong id="isolatedCount">—</strong><span>strong isolation evidence</span></div>
+        <div class="hero-fact"><strong id="medianPrice">—</strong><span>median known asking price</span></div>
+        <div class="hero-fact"><strong id="largestPlot">—</strong><span>largest stated plot</span></div>
+      </div>
+    </section>
+
+    <div class="snapshot-note">
+      <strong>Source checks: 17 September 2026</strong>
+      <span>Most recently refreshed entries from the longlist. Availability and asking prices may have changed; open the agent listing before acting.</span>
+    </div>
+
+    <section class="controls" aria-label="Property filters">
+      <div class="controls-main">
+        <div class="field field-search"><label for="search">Find a place</label><input id="search" type="search" placeholder="Try Durness, croft, barn…" autocomplete="off" /></div>
+        <div class="field"><label for="area">Area</label><select id="area"><option value="All">Both areas</option><option>Caithness</option><option>Sutherland</option></select></div>
+        <div class="field"><label for="maxPrice">Maximum price</label><select id="maxPrice"><option value="350000">£350,000</option><option value="300000">£300,000</option><option value="250000">£250,000</option><option value="200000">£200,000</option></select></div>
+        <div class="field"><label for="minBeds">Bedrooms</label><select id="minBeds"><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></div>
+        <div class="field"><label for="sort">Order</label><select id="sort"><option value="score">Best match</option><option value="price-asc">Price: low first</option><option value="price-desc">Price: high first</option><option value="land">Largest plot</option><option value="distance">Furthest from Thurso</option></select></div>
+      </div>
+      <div class="toggles">
+        <button class="chip" data-filter="workshop" aria-pressed="false">Workshop / plot <small>70+</small></button>
+        <button class="chip" data-filter="isolation" aria-pressed="false">Isolation <small>70+</small></button>
+        <button class="chip" data-filter="catSafe" aria-pressed="false">Cat-safe position <small>70+</small></button>
+        <button class="chip" data-filter="moveIn" aria-pressed="false">Move-in evidence</button>
+        <button class="chip" data-filter="shortlist" aria-pressed="false">Shortlisted this visit</button>
+        <div class="controls-result"><span><strong id="resultCount">—</strong> shown</span><button class="text-action" id="clearFilters">Clear filters</button></div>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <aside class="rail">
+        <section>
+          <h2>The brief</h2>
+          <p>The criteria that matter here, not generic estate-agent enthusiasm.</p>
+          <ul class="brief-list">
+            <li>Under £350k; two bedrooms remain in scope</li>
+            <li>At least 20 minutes from Thurso; Wick excluded</li>
+            <li>Move-in condition preferred</li>
+            <li>Space from neighbours and safer road position</li>
+            <li>Serious workshop, barn or buildable plot</li>
+          </ul>
+        </section>
+        <section class="weights-section">
+          <h2>Tune the score</h2>
+          <p>Adjusts the ranking for this visit only.</p>
+          <div id="weights"></div>
+          <div class="rail-actions">
+            <button class="button" id="resetWeights">Reset</button>
+            <button class="button primary" id="downloadShortlist" disabled>Export shortlist</button>
+          </div>
+        </section>
+        <section>
+          <h2>Evidence rules</h2>
+          <p>Unknown stays unknown. Neutral scores keep an otherwise promising house visible, but mark what needs checking on the map, particulars or at a viewing.</p>
+        </section>
+      </aside>
+
+      <section class="property-list" aria-live="polite">
+        <div class="list-head"><h2>Longlist</h2><span id="listSummary">Best match first</span></div>
+        <div id="properties"></div>
+      </section>
+    </div>
+
+    <footer class="footer">Property details are a dated reading of the linked agent pages. Drive times were checked from Thurso centre where available; planning, access, title, flood exposure and outbuilding suitability still need professional verification.</footer>
+  </main>
+
+  <script>
+    const PROPERTIES = [{"id":132,"listing_url":"https://www.onthemarket.com/details/18192692/","title":"Strathmore, Tannachy, Rogart IV28 3YF","area":"Sutherland","locality":"Rogart","price_gbp":275000,"price_is_tbc":false,"price_status":"Offers over £275,000","bedrooms":3,"bathrooms":2,"description":"Modernised bungalow set in a 0.9-acre garden in ancient woodland. Workshop/summer house plus two sheds, car shelter, log burners.","has_garage":false,"garage_notes":"Car shelter (no enclosed garage)","land_acres":0.9,"condition_text":"Modernised","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"0.9-acre garden in ancient woodland","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":89,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~88.6 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":90,"isolation_notes":"0.9 acres in ancient woodland","cat_safety_score":85,"cat_safety_notes":"Woodland setting, well set back","workshop_score":70,"workshop_notes":"Workshop/summer house + two sheds; 0.9-acre woodland garden"},{"id":134,"listing_url":"https://www.rightmove.co.uk/properties/165370826","title":"138 Kinlochbervie, Sutherland","area":"Sutherland","locality":"Kinlochbervie","price_gbp":215000,"price_is_tbc":false,"price_status":"Offers over £215,000","bedrooms":2,"bathrooms":1,"description":"2-bed home on an owner-occupied croft of ~3.06 acres (Munro & Noble). Detached double garage with inspection pit.","has_garage":true,"garage_notes":"Detached double garage with inspection pit","land_acres":3.06,"condition_text":"As described by agent","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Owner-occupied croft, ~3.06 acres","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":132,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~132.1 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":85,"isolation_notes":"~3-acre croft","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":75,"workshop_notes":"Detached double garage with inspection pit on ~3.06-acre croft"},{"id":135,"listing_url":"https://Www.onthemarket.com/details/18214116/","title":"Caladh, 157 Stoer (near Lochinver)","area":"Sutherland","locality":"Stoer","price_gbp":245000,"price_is_tbc":false,"price_status":"Offers over £245,000","bedrooms":3,"bathrooms":2,"description":"Extended owner-occupied croft house (Galbraith) with a range of useful outbuildings plus a bothy (home-office/workshop potential), on ~2.6 acres.","has_garage":false,"garage_notes":null,"land_acres":2.6,"condition_text":"Extended croft house","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Owner-occupied croft, ~2.6 acres","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":168,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~168.1 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":85,"isolation_notes":"~2.6-acre croft","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":75,"workshop_notes":"Range of outbuildings + bothy (workshop potential); ~2.6 acres"},{"id":136,"listing_url":"https://www.rightmove.co.uk/properties/170447012","title":"162 Stoer, Sutherland","area":"Sutherland","locality":"Stoer","price_gbp":null,"price_is_tbc":true,"price_status":"Asking price not shown on Rightmove detail page","bedrooms":3,"bathrooms":1,"description":"Three-bed detached house (~120 years old, extended and modernised) in an elevated position overlooking Stoer beach on the NC500. Two large stone/timber outbuildings (one with upper floor), polytunnel, productive vegetable plot, enclosed rear garden, gated driveway for a couple of vehicles. Wood burning stove, oil-fired Rayburn. (Detail page verified 17 Sep 2026.)","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"Extended and modernised; c.120 years old","sea_view":true,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Elevated above Stoer beach; NC500","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":168,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~168.1 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":80,"isolation_notes":"Elevated hamlet position","cat_safety_score":65,"cat_safety_notes":"Gated driveway; rural hamlet","workshop_score":65,"workshop_notes":"Two large stone/timber outbuildings (one with upper floor); gated driveway"},{"id":124,"listing_url":"https://www.onthemarket.com/details/19702017/","title":"Riverview, 189 Crofthaugh, Brora KW9 6NE","area":"Sutherland","locality":"Brora","price_gbp":220000,"price_is_tbc":false,"price_status":"Offers over £220,000","bedrooms":2,"bathrooms":1,"description":"Edge-of-village cottage on ~3-acre croft with barn and shed, ample parking, log burners. Crofting solicitor advice recommended for croft tenure.","has_garage":false,"garage_notes":null,"land_acres":3.0,"condition_text":"As described by agent","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Edge of village; ~3-acre croft","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":67,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~66.5 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":80,"isolation_notes":"~3-acre croft","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":70,"workshop_notes":"Barn + shed on ~3-acre croft; ample parking"},{"id":122,"listing_url":"https://www.onthemarket.com/details/17723830/","title":"Craigmhor, Main Street, Golspie","area":"Sutherland","locality":"Golspie","price_gbp":230000,"price_is_tbc":false,"price_status":null,"bedrooms":3,"bathrooms":2,"description":"Traditional stone house (built 1862, extended 2013) on beach side of Main Street, Golspie, just steps from the beach. Comprises 3 bedrooms (1 ground floor with en-suite shower room), large kitchen/dining room with log burner, utility/cloakroom, bright lounge with French doors to enclosed garden. Located in heart of Golspie with easy access to shops, doctors, schools, pubs and restaurants.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"move-in","sea_view":false,"setting_rural":true,"flood_risk_low":true,"setting_notes":"Coastal village setting, beach-side location with enclosed garden","midge_risk_low":true,"midge_notes":"Exposed east coastal location - lower midge risk","thurso_drive_minutes":null,"thurso_distance_notes":null,"isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":123,"listing_url":"https://www.rightmove.co.uk/properties/167920064","title":"4 bedroom detached bungalow for sale in Dunbeath, Highland KW6 6EA","area":"Caithness","locality":"Dunbeath","price_gbp":null,"price_is_tbc":true,"price_status":"Offers Over / POA","bedrooms":4,"bathrooms":2,"description":"Beautiful detached bungalow with panoramic views in the scenic coastal village of Dunbeath. Spacious bright lounge with large picture window and feature fireplace, open plan to dining area leading to well-presented oak fitted kitchen. Four neutrally decorated bedrooms, WC and spacious family wet room. Generous enclosed plot with well-established gardens, off-road parking in generous drive, child's play area to rear and wooden shed. LPG gas central heating. Less than 5 min walk to doctor's surgery, Dunbeath Primary School, Post Office and Community Health & Wellbeing Centre.","has_garage":false,"garage_notes":"No garage mentioned – off-road parking in generous drive plus wooden shed; generous plot with potential for garage/barn subject to planning","land_acres":null,"condition_text":"move-in – immaculate presented throughout","sea_view":true,"setting_rural":true,"flood_risk_low":true,"setting_notes":"Rural coastal village on NC500, east Caithness coast; generous garden plot","midge_risk_low":true,"midge_notes":"Exposed east Caithness coast, windy/open – lower midge risk","thurso_drive_minutes":null,"thurso_distance_notes":null,"isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":133,"listing_url":"https://www.rightmove.co.uk/properties/90532158","title":"Melvich, Sutherland (barn property)","area":"Sutherland","locality":"Melvich","price_gbp":250000,"price_is_tbc":false,"price_status":"Offers over £250,000 (reduced vs Home Report)","bedrooms":4,"bathrooms":1,"description":"4-bed home with large block barn 56ft x 19ft plus shed, both powered (workshop/agricultural potential), sea views. Reduced versus Home Report value.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"As described by agent","sea_view":true,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Sea views","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":29,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~29.4 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":85,"workshop_notes":"Large powered block barn 56ft x 19ft + powered shed — strong workshop potential"},{"id":131,"listing_url":"https://www.rightmove.co.uk/properties/89862699","title":"Bual Cottage, Marrel West, Helmsdale KW8 6HU","area":"Sutherland","locality":"Helmsdale","price_gbp":250000,"price_is_tbc":false,"price_status":"Offers over £250,000","bedrooms":2,"bathrooms":2,"description":"2-bed home, semi-rural. Stone-built workshop plus timber stable and yurt outbuilding, substantial gardens, wood burner, handcrafted finishes.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"Handcrafted finishes","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Semi-rural; substantial gardens","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":52,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~51.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":75,"isolation_notes":"Semi-rural; substantial gardens","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":70,"workshop_notes":"Stone-built workshop + timber stable + yurt outbuilding; substantial gardens"},{"id":129,"listing_url":"https://www.onthemarket.com/details/18948338/","title":"Tawny Croft, 84 East Helmsdale KW8 6JL","area":"Sutherland","locality":"Helmsdale","price_gbp":250000,"price_is_tbc":false,"price_status":"Offers over £250,000","bedrooms":3,"bathrooms":1,"description":"Modernised 3-bed home on ~2.03-acre croft (1.8-acre field plus riverside parcel). Air-source heating + solar, lean-to shed. Crofting solicitor advice recommended.","has_garage":false,"garage_notes":null,"land_acres":2.03,"condition_text":"Modernised","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"~2.03-acre croft with riverside parcel","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":52,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~51.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":80,"isolation_notes":"~2-acre croft","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":60,"workshop_notes":"Lean-to shed; ~2 acres of croft land for outbuildings (subject to consents)"},{"id":145,"listing_url":"https://www.onthemarket.com/details/18971563/","title":"56 Sangomore, Durness","area":"Sutherland","locality":"Durness","price_gbp":250000,"price_is_tbc":false,"price_status":"£250,000","bedrooms":3,"bathrooms":2,"description":"Stunning detached 3-bed home (shower room plus family bathroom) in a large enclosed walled garden of ~0.4 acres. Multi-car gravel parking to the side, log burner, Aga, boot room, utility and large dry store room. (Detail page verified 17 Sep 2026.)","has_garage":false,"garage_notes":null,"land_acres":0.4,"condition_text":"As described by agent","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Large enclosed walled garden, ~0.4 acres","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":108,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~107.9 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":70,"isolation_notes":"0.4-acre walled garden","cat_safety_score":75,"cat_safety_notes":"Enclosed walled garden","workshop_score":45,"workshop_notes":"Large dry store room; multi-car parking; 0.4-acre walled garden"},{"id":138,"listing_url":"https://www.rightmove.co.uk/properties/92563731#/?channel=RES_BUY","title":"Roneval, Dornoch Road, Bonar Bridge (Ardgay IV24)","area":"Sutherland","locality":"Bonar Bridge","price_gbp":200000,"price_is_tbc":false,"price_status":"Offers over £200,000","bedrooms":2,"bathrooms":2,"description":"2-bed home with views over the Kyle of Sutherland. Workshop, generous rear garden, multi-fuel stove.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"As described by agent","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Views over Kyle of Sutherland","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":106,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~105.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":60,"isolation_notes":"Generous rear garden","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":55,"workshop_notes":"Workshop; generous rear garden"},{"id":139,"listing_url":"https://Www.onthemarket.com/details/17724026/","title":"The Old Post Office, Culrain, Ardgay IV24 3DW","area":"Sutherland","locality":"Culrain (Ardgay)","price_gbp":295000,"price_is_tbc":false,"price_status":"£295,000","bedrooms":3,"bathrooms":2,"description":"Early-1900s character cottage. Detached timber garage 7.18m x 3.15m with inspection pit, plus lined/insulated powered garden room, enclosed gardens. NOTE: OTM page rendered live 17 Sep 2026 but the listing was absent from Rightmove's live IV24 index — confirm status with the agent.","has_garage":true,"garage_notes":"Detached timber garage 7.18m x 3.15m with inspection pit","land_acres":null,"condition_text":"Early-1900s character cottage","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Enclosed gardens","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":115,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~114.6 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":60,"isolation_notes":"Enclosed gardens","cat_safety_score":60,"cat_safety_notes":"Enclosed gardens","workshop_score":70,"workshop_notes":"Detached garage with inspection pit + lined/insulated powered garden room"},{"id":130,"listing_url":"https://www.onthemarket.com/details/18685231/","title":"Valhalla, Sutherland Street, Helmsdale KW8 6JE","area":"Sutherland","locality":"Helmsdale","price_gbp":270000,"price_is_tbc":false,"price_status":"Offers over £270,000","bedrooms":4,"bathrooms":2,"description":"1867 former police station. Garage plus large powered shed and wood store, gated driveway, large enclosed garden. Currently a holiday let (furnished going-concern possible).","has_garage":true,"garage_notes":"Garage plus large powered shed","land_acres":null,"condition_text":"Former police station, currently holiday let","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"Village position; large enclosed garden","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":52,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~51.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":55,"isolation_notes":"Large enclosed garden","cat_safety_score":60,"cat_safety_notes":"Gated driveway; enclosed garden","workshop_score":65,"workshop_notes":"Garage + large powered shed + wood store; gated driveway"},{"id":128,"listing_url":"https://www.onthemarket.com/details/17931831/","title":"1 Police Houses, Glebe Terrace, Helmsdale KW8 6LG","area":"Sutherland","locality":"Helmsdale","price_gbp":150000,"price_is_tbc":false,"price_status":"Offers over £150,000","bedrooms":3,"bathrooms":2,"description":"3-bed home, freshly decorated. Double garage plus stone garages and storage shed, off-street parking, multi-fuel stove.","has_garage":true,"garage_notes":"Double garage plus stone garages","land_acres":null,"condition_text":"Freshly decorated","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"Village position","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":52,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~51.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":65,"workshop_notes":"Double garage + stone garages + storage shed; off-street parking"},{"id":142,"listing_url":"https://www.rightmove.co.uk/properties/166105676","title":"13 Terrace Street, Embo IV25 3PX","area":"Sutherland","locality":"Embo","price_gbp":260000,"price_is_tbc":false,"price_status":"Offers over £260,000","bedrooms":3,"bathrooms":3,"description":"Extended end-terrace in move-in condition with log burners. Detached garage plus hardstanding for 2 vehicles.","has_garage":true,"garage_notes":"Detached garage plus hardstanding for 2 vehicles","land_acres":null,"condition_text":"Move-in condition","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"End-terrace","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":92,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~91.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":40,"isolation_notes":"End-terrace","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":45,"workshop_notes":"Detached garage + hardstanding"},{"id":137,"listing_url":"https://www.rightmove.co.uk/properties/90965103#/?channel=RES_BUY","title":"21 Swordale Crescent, Bonar Bridge IV24 3EH","area":"Sutherland","locality":"Bonar Bridge","price_gbp":140000,"price_is_tbc":false,"price_status":"Offers over £140,000","bedrooms":3,"bathrooms":2,"description":"3-bed home (bathroom plus wet room) with large workshop and garden shed, 2-car driveway.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"As described by agent","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":null,"midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":106,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~105.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":60,"workshop_notes":"Large workshop + garden shed; 2-car driveway"},{"id":125,"listing_url":"https://www.Onthemarket.com/details/17741879/","title":"Pier House, Harbour Road, Brora KW9 6QF","area":"Sutherland","locality":"Brora","price_gbp":175000,"price_is_tbc":false,"price_status":"£175,000 (reduced from £195,000)","bedrooms":4,"bathrooms":2,"description":"Ex-Harbour Master's house overlooking the harbour. Integral garage, carport and office/workshop store. NEEDS remedial work and modernisation — structural, damp and timber reports available.","has_garage":true,"garage_notes":"Integral garage plus carport","land_acres":null,"condition_text":"Needs modernisation; structural/damp/timber reports available","sea_view":true,"setting_rural":false,"flood_risk_low":false,"setting_notes":"Harbour position","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":67,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~66.5 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":55,"workshop_notes":"Office/workshop store plus integral garage and carport"},{"id":127,"listing_url":"https://www.rightmove.co.uk/properties/87842415","title":"15 Tarbat Crescent, Brora KW9 6PJ","area":"Sutherland","locality":"Brora","price_gbp":120000,"price_is_tbc":false,"price_status":"Offers over £120,000","bedrooms":3,"bathrooms":1,"description":"3-bed home with workshop, greenhouse and driveway, enclosed gardens. NOTE: listing currently states VIEWINGS SUSPENDED — status should be confirmed with the agent (may be under offer).","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"Status uncertain — viewings suspended on listing","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":null,"midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":67,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~66.5 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":50,"workshop_notes":"Workshop plus greenhouse; driveway"},{"id":146,"listing_url":"https://www.rightmove.co.uk/properties/88898520","title":"Loch Clash Cottage, 135 Kinlochbervie","area":"Sutherland","locality":"Kinlochbervie","price_gbp":170000,"price_is_tbc":false,"price_status":"£170,000 fixed","bedrooms":3,"bathrooms":1,"description":"3-bed loch-side home with wraparound garden.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"As described by agent","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Loch-side; wraparound garden","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":132,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~132.1 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":70,"isolation_notes":"Loch-side; wraparound garden","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":143,"listing_url":"https://www.onthemarket.com/details/18452795/","title":"42 Simpson Crescent, Helmsdale KW8 6LE","area":"Sutherland","locality":"Helmsdale","price_gbp":89750,"price_is_tbc":false,"price_status":"£89,750 fixed (£10,000 below Home Report)","bedrooms":3,"bathrooms":1,"description":"3-bed home with shed and off-street parking. Fixed price £10k below Home Report.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"As described by agent","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":null,"midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":52,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~51.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":30,"workshop_notes":"Shed; off-street parking"},{"id":141,"listing_url":"https://www.rightmove.co.uk/properties/91848630","title":"15 King Street, Embo IV25 3PU","area":"Sutherland","locality":"Embo","price_gbp":235000,"price_is_tbc":false,"price_status":"Offers over £235,000","bedrooms":3,"bathrooms":2,"description":"c.1900 stone cottage with en-suite bedroom. Timber summer house plus shed, private rear garden plus ground across the road, gravel parking.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"c.1900 character cottage","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"Private rear garden plus ground across road","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":92,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~91.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":40,"workshop_notes":"Timber summer house + shed; gravel parking"},{"id":140,"listing_url":"https://www.OntheMarket.com/details/14834327/","title":"8 Terrace Street, Embo","area":"Sutherland","locality":"Embo","price_gbp":225000,"price_is_tbc":false,"price_status":"£225,000 (brochure states offers over £229,000; Home Report £250,000)","bedrooms":4,"bathrooms":2,"description":"4-bed home needing modernisation. Detached garage opposite, enclosed rear garden, multi-fuel stove with back boiler.","has_garage":true,"garage_notes":"Detached garage opposite","land_acres":null,"condition_text":"Needs modernisation","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"Enclosed rear garden","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":92,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~91.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":40,"workshop_notes":"Detached garage; enclosed rear garden"},{"id":149,"listing_url":"https://www.rightmove.co.uk/properties/90253512","title":"Druim Bhlar, Smoo Road, Durness","area":"Sutherland","locality":"Durness","price_gbp":100000,"price_is_tbc":false,"price_status":"Offers over £100,000 (agent: 3bd/2wc; mortgageable; near Smoo Cave)","bedrooms":3,"bathrooms":2,"description":"3-bed semi-detached home near Smoo Cave, mortgageable. WC count per agent text (2wc).","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"As described by agent","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Near Smoo Cave","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":108,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~107.9 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":126,"listing_url":"https://www.rightmove.co.uk/properties/160929665","title":"Rannoch, 78 Tower Street, Golspie","area":"Sutherland","locality":"Golspie","price_gbp":250000,"price_is_tbc":false,"price_status":"Offers over £250,000","bedrooms":4,"bathrooms":3,"description":"Modern detached 4-bed home, well presented. Large garage, conservatory, woodburner.","has_garage":true,"garage_notes":"Large garage","land_acres":null,"condition_text":"Well presented; modern","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"Town position","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":77,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~76.9 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":40,"workshop_notes":"Large garage"},{"id":152,"listing_url":"https://www.rightmove.co.uk/properties/164341448","title":"Tigh na Drobhair, 327 Embo Street, Dornoch IV25 3PW","area":"Sutherland","locality":"Dornoch","price_gbp":249995,"price_is_tbc":false,"price_status":"Offers over £249,995","bedrooms":2,"bathrooms":2,"description":"2-bed 1.5-storey cottage with Firth views and large driveway. EPC F.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"EPC F","sea_view":true,"setting_rural":false,"flood_risk_low":false,"setting_notes":"Firth views; large driveway","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":93,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~92.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":30,"workshop_notes":"Large driveway"},{"id":147,"listing_url":"https://www.rightmove.co.uk/properties/92076231","title":"Old Manse Cottage, Sangomore, Durness IV27","area":"Sutherland","locality":"Durness","price_gbp":300000,"price_is_tbc":false,"price_status":"Offers over £300,000","bedrooms":2,"bathrooms":3,"description":"Striking contemporary 2-bed cottage (shower room plus two en-suites, per floor plan) on the site of a former barn, completed to a very high standard. Currently a successful holiday let. About 0.15 acres; views to the Minch; walking distance of Sango Bay beach. EPC E. (Floor plan read 17 Sep 2026 to confirm 3 bathrooms.)","has_garage":false,"garage_notes":null,"land_acres":0.15,"condition_text":"Completed to very high standard; successful holiday let; EPC E","sea_view":true,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Hamlet of Sangomore, edge of Durness; 0.15 acres","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":108,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~107.9 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":75,"isolation_notes":"Hamlet setting, tucked behind church","cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":"No garage or outbuildings stated; 0.15-acre plot"},{"id":144,"listing_url":"https://www.onthemarket.com/details/17724400/","title":"8 Trentham Street, Helmsdale KW8 6JD","area":"Sutherland","locality":"Helmsdale","price_gbp":164500,"price_is_tbc":false,"price_status":"£164,500 (townhouse; holiday let; furniture negotiable; no garage)","bedrooms":3,"bathrooms":2,"description":"3-bed townhouse, currently a holiday let, furniture negotiable. No garage.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"Holiday let","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"Townhouse; no garage","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":52,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~51.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":151,"listing_url":"https://www.rightmove.co.uk/properties/150348245#/?channel=RES_BUY","title":"3 Migdale House, Bonar Bridge IV24 3AG","area":"Sutherland","locality":"Bonar Bridge","price_gbp":235000,"price_is_tbc":false,"price_status":"Offers over £235,000","bedrooms":2,"bathrooms":2,"description":"2-bed apartment in a B-listed 1872 former hospital conversion. Residents' parking.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"As described by agent","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"B-listed 1872 hospital conversion","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":106,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~105.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":150,"listing_url":"https://www.rightmove.co.uk/properties/162443300#/?channel=RES_BUY","title":"2 Migdale House, Bonar Bridge IV24 3AG","area":"Sutherland","locality":"Bonar Bridge","price_gbp":215000,"price_is_tbc":false,"price_status":"£215,000 fixed","bedrooms":2,"bathrooms":2,"description":"2-bed apartment in a B-listed 1872 former hospital conversion. Residents' parking.","has_garage":false,"garage_notes":"Residents' parking (no garage)","land_acres":null,"condition_text":"As described by agent","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":"B-listed 1872 hospital conversion","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":106,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~105.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":148,"listing_url":"https://www.onthemarket.com/details/19119698/","title":"Colonsay, Drumbeg","area":"Sutherland","locality":"Drumbeg","price_gbp":245000,"price_is_tbc":false,"price_status":"£245,000 (reduced; £15,000 below Home Report)","bedrooms":3,"bathrooms":2,"description":"3-bed home with Loch Drumbeg views. Reduced; £15k below Home Report.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"As described by agent","sea_view":false,"setting_rural":true,"flood_risk_low":false,"setting_notes":"Loch Drumbeg views","midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":166,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~166.1 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":121,"listing_url":"https://www.rightmove.co.uk/properties/167292785","title":"4 bedroom semi-detached house for sale in 2 Gardener's Cottage, Cambusmore, Dornoch, Sutherland IV25 3JD","area":"Sutherland","locality":"Dornoch","price_gbp":null,"price_is_tbc":true,"price_status":"Offers Over / POA","bedrooms":4,"bathrooms":1,"description":"No 2 Gardener's Cottage is located in an idyllic setting nestled below hills and surrounded by woodland with views overlooking Loch Fleet. A former gardener's house to Cambusmore Estate. Accommodation comprises 3 bedrooms plus sitting room usable as 4th bedroom, 2 sitting rooms, kitchen, bathroom with three-piece suite and separate shower enclosure, and large enclosed garden. Features multi-fuel burner, exposed stonework, and 'chocolate box' cottage character.","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"move-in","sea_view":false,"setting_rural":true,"flood_risk_low":true,"setting_notes":"Idyllic rural setting nestled below hills, surrounded by woodland, overlooking Loch Fleet","midge_risk_low":false,"midge_notes":"Wooded, sheltered lochside location surrounded by woodland - higher midge risk","thurso_drive_minutes":null,"thurso_distance_notes":null,"isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null},{"id":153,"listing_url":"https://www.rightmove.co.uk/properties/89633328","title":"11 Elizabeth Gardens, Dornoch IV25 3NP","area":"Sutherland","locality":"Dornoch","price_gbp":255000,"price_is_tbc":false,"price_status":"Offers over £255,000","bedrooms":3,"bathrooms":3,"description":"3-bed semi-detached villa, walk-in condition. Conservatory, air-source heat pump (2023).","has_garage":false,"garage_notes":null,"land_acres":null,"condition_text":"Walk-in condition; heat pump 2023","sea_view":false,"setting_rural":false,"flood_risk_low":false,"setting_notes":null,"midge_risk_low":false,"midge_notes":null,"thurso_drive_minutes":93,"thurso_distance_notes":"OSRM driving time from Thurso centre to locality: ~92.8 min (checked 17 Sep 2026). In scope: 20+ minutes from Thurso.","isolation_score":null,"isolation_notes":null,"cat_safety_score":null,"cat_safety_notes":null,"workshop_score":null,"workshop_notes":null}];
+    const DEFAULT_WEIGHTS = { price: 10, beds: 8, setting: 5, location: 10, workshop: 25, condition: 15, affordability: 5, midge: 5, isolation: 20, catSafe: 15 };
+    const WEIGHT_LABELS = { price: "Price / value", beds: "Beds / baths", setting: "Setting", location: "Distance from Thurso", workshop: "Workshop / plot", condition: "Move-in condition", affordability: "Affordability", midge: "Midge exposure", isolation: "Isolation", catSafe: "Cat-safe road" };
+    const state = {
+      search: "", area: "All", maxPrice: 350000, minBeds: 2, sort: "score",
+      workshop: false, isolation: false, catSafe: false, moveIn: false, shortlist: false,
+      weights: { ...DEFAULT_WEIGHTS }, saved: new Set(), expanded: new Set()
+    };
+
+    const money = value => value == null ? "Price on application" : new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(value);
+    const esc = value => String(value ?? "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+    const sourceName = url => { try { const h = new URL(url).hostname.toLowerCase(); if (h.includes("rightmove")) return "Rightmove"; if (h.includes("onthemarket")) return "OnTheMarket"; if (h.includes("zoopla")) return "Zoopla"; if (h.includes("espc")) return "ESPC"; if (h.includes("s1homes")) return "s1homes"; return "Agent listing"; } catch { return "Agent listing"; } };
+    const conditionIsMoveIn = p => /move|walk-in|turnkey|excellent|immaculate|modernis|refurb|good condition|well-maintained/i.test(p.condition_text || "");
+    const level = score => score >= 70 ? "good" : score >= 40 ? "warn" : "poor";
+    const evidence = (score, notes, fallback) => ({ score: score == null ? 40 : score, notes: notes || fallback });
+
+    function criteriaFor(p) {
+      const price = p.price_gbp;
+      const priceResult = price == null ? [50, p.price_status || "Price needs checking"] : price <= 200000 ? [100, "Within £200k equity"] : price <= 240000 ? [80, "Small mortgage territory"] : price <= 280000 ? [60, "Moderate mortgage"] : price <= 320000 ? [40, "More stretched"] : [20, "At the top of the budget"];
+      const bedResult = p.bedrooms >= 3 ? [100, `${p.bedrooms} bedrooms`] : [90, "Two bedrooms — fully in scope"];
+      let settingScore = 0; const settingBits = [];
+      if (p.setting_rural) { settingScore += 35; settingBits.push("rural"); }
+      if (p.sea_view) { settingScore += 25; settingBits.push("sea view"); }
+      if (p.flood_risk_low) { settingScore += 20; settingBits.push("low flood risk stated"); }
+      if (/quiet|lane|end of road|cul-de-sac/i.test(p.setting_notes || "")) { settingScore += 20; settingBits.push("quiet position"); }
+      if (!settingBits.length) { settingScore = 40; settingBits.push("setting details need checking"); }
+      const locationResult = p.thurso_drive_minutes != null ? [p.thurso_drive_minutes >= 20 ? 100 : 0, `${p.thurso_drive_minutes} minutes from Thurso`] : [55, p.thurso_distance_notes || "Drive time needs checking"];
+      const workshopResult = evidence(p.workshop_score, p.workshop_notes || p.garage_notes, p.land_acres >= .75 ? `${p.land_acres} acres — possible build plot, subject to planning and access` : p.has_garage ? "Garage present; capacity needs checking" : "No serious workshop or plot evidence yet");
+      const c = (p.condition_text || "").toLowerCase();
+      const conditionResult = /move|walk-in|turnkey|excellent|immaculate|modernis|refurb/.test(c) ? [100, p.condition_text] : /light|updat|cosmetic|good condition|well-maintained/.test(c) ? [60, p.condition_text] : /project|renovation|cash only|substantial|needs work|rough/.test(c) ? [10, p.condition_text] : [40, p.condition_text || "Condition needs checking"];
+      const mortgage = price == null ? 0 : Math.max(0, price - 200000);
+      const monthlyMortgage = mortgage ? Math.round((mortgage * .055 / 12) / (1 - Math.pow(1 + .055 / 12, -25 * 12))) : 0;
+      const affordabilityResult = price == null ? [50, "Price needs checking"] : mortgage === 0 ? [100, "Potential cash buy"] : mortgage <= 50000 ? [80, `About £${monthlyMortgage}/month mortgage`] : mortgage <= 100000 ? [55, `About £${monthlyMortgage}/month mortgage`] : mortgage <= 150000 ? [30, `About £${monthlyMortgage}/month mortgage`] : [10, `About £${monthlyMortgage}/month mortgage`];
+      const midgeResult = p.midge_notes ? [p.midge_risk_low ? 100 : 20, p.midge_notes] : [50, "Midge exposure not evidenced"];
+      const isolationResult = evidence(p.isolation_score, p.isolation_notes, "Neighbour separation needs checking");
+      const catResult = evidence(p.cat_safety_score, p.cat_safety_notes, "Road position and setback need checking");
+      const rows = [
+        ["price", "Price / value", ...priceResult], ["beds", "Beds / baths", ...bedResult], ["setting", "Setting", Math.min(100, settingScore), settingBits.join(" · ")],
+        ["location", "20+ min from Thurso", ...locationResult], ["workshop", "Workshop / build plot", workshopResult.score, workshopResult.notes], ["condition", "Move-in condition", ...conditionResult],
+        ["affordability", "Affordability", ...affordabilityResult], ["midge", "Midge exposure", ...midgeResult], ["isolation", "Isolation", isolationResult.score, isolationResult.notes], ["catSafe", "Cat-safe road position", catResult.score, catResult.notes]
+      ];
+      return rows.map(([key, label, score, reason]) => ({ key, label, score, reason, level: level(score) }));
+    }
+
+    function totalScore(criteria) {
+      const totalWeight = Object.values(state.weights).reduce((a, b) => a + b, 0) || 1;
+      return Math.round(criteria.reduce((sum, c) => sum + c.score * state.weights[c.key], 0) / totalWeight);
+    }
+
+    const ENRICHED = PROPERTIES.map(p => { const criteria = criteriaFor(p); return { ...p, criteria, currentScore: totalScore(criteria) }; });
+    function refreshScores() { ENRICHED.forEach(p => p.currentScore = totalScore(p.criteria)); }
+
+    function renderWeights() {
+      const host = document.getElementById("weights");
+      host.innerHTML = Object.entries(WEIGHT_LABELS).map(([key, label]) => `<div class="weight"><div class="weight-head"><label for="w-${key}">${esc(label)}</label><output id="o-${key}">${state.weights[key]}</output></div><input id="w-${key}" data-weight="${key}" type="range" min="0" max="40" step="1" value="${state.weights[key]}" /></div>`).join("");
+    }
+
+    function filteredProperties() {
+      const query = state.search.trim().toLowerCase();
+      const results = ENRICHED.filter(p => {
+        if (state.area !== "All" && p.area !== state.area) return false;
+        if (p.price_gbp != null && p.price_gbp > state.maxPrice) return false;
+        if (p.bedrooms < state.minBeds) return false;
+        if (state.workshop && (p.workshop_score ?? 40) < 70) return false;
+        if (state.isolation && (p.isolation_score ?? 40) < 70) return false;
+        if (state.catSafe && (p.cat_safety_score ?? 40) < 70) return false;
+        if (state.moveIn && !conditionIsMoveIn(p)) return false;
+        if (state.shortlist && !state.saved.has(p.id)) return false;
+        if (query && !`${p.title} ${p.area} ${p.locality} ${p.description} ${p.setting_notes || ""} ${p.workshop_notes || ""}`.toLowerCase().includes(query)) return false;
+        return true;
+      });
+      results.sort((a, b) => {
+        if (state.sort === "price-asc") return (a.price_gbp ?? Infinity) - (b.price_gbp ?? Infinity);
+        if (state.sort === "price-desc") return (b.price_gbp ?? -1) - (a.price_gbp ?? -1);
+        if (state.sort === "land") return (b.land_acres ?? -1) - (a.land_acres ?? -1);
+        if (state.sort === "distance") return (b.thurso_drive_minutes ?? -1) - (a.thurso_drive_minutes ?? -1);
+        return b.currentScore - a.currentScore || (a.price_gbp ?? Infinity) - (b.price_gbp ?? Infinity);
+      });
+      return results;
+    }
+
+    function evidenceItem(label, score, notes) {
+      const s = score == null ? 40 : score; const l = level(s);
+      return `<div class="evidence-item"><div class="evidence-label"><span>${esc(label)}</span><span class="evidence-score level-${l}">${score == null ? "CHECK" : `${score}/100`}</span></div><p>${esc(notes || "Evidence not yet available — check particulars and map.")}</p></div>`;
+    }
+
+    function propertyMarkup(p, index) {
+      const workshop = evidence(p.workshop_score, p.workshop_notes || p.garage_notes, "No substantial workshop or plot evidence yet.");
+      const isolation = evidence(p.isolation_score, p.isolation_notes, "Space from neighbours needs checking.");
+      const cats = evidence(p.cat_safety_score, p.cat_safety_notes, "Road position and setback need checking.");
+      const scoreLevel = level(p.currentScore);
+      const detailOpen = state.expanded.has(p.id);
+      const priceText = p.price_gbp == null ? (p.price_status || "Price on application") : money(p.price_gbp);
+      const land = p.land_acres != null ? `${p.land_acres} ${p.land_acres === 1 ? "acre" : "acres"}` : "Plot not stated";
+      const distance = p.thurso_drive_minutes != null ? `${p.thurso_drive_minutes} min from Thurso` : "Drive time to check";
+      return `<article class="property" data-id="${p.id}">
+        <div class="rank">${String(index + 1).padStart(2, "0")}</div>
+        <div class="property-main">
+          <div class="property-kicker"><span>${esc(p.area)} · ${esc(p.locality)}</span><span class="source">${esc(sourceName(p.listing_url))}</span></div>
+          <h3>${esc(p.title)}</h3>
+          <div class="facts"><span><strong>${esc(priceText)}</strong></span><span>${p.bedrooms} bed · ${p.bathrooms || "?"} bath</span><span>${esc(land)}</span><span>${esc(distance)}</span></div>
+          <p class="description">${esc(p.description)}</p>
+          <div class="evidence">
+            ${evidenceItem("Workshop / plot", p.workshop_score, workshop.notes)}
+            ${evidenceItem("Isolation", p.isolation_score, isolation.notes)}
+            ${evidenceItem("Cat safety", p.cat_safety_score, cats.notes)}
+          </div>
+          <div class="property-actions">
+            <button class="chip save-property" data-id="${p.id}" aria-pressed="${state.saved.has(p.id)}">${state.saved.has(p.id) ? "★ Shortlisted" : "☆ Shortlist this visit"}</button>
+            <button class="text-action detail-toggle" data-id="${p.id}" aria-expanded="${detailOpen}">${detailOpen ? "Hide score breakdown" : "Why this score"}</button>
+            <a class="listing-link" href="${esc(p.listing_url)}" target="_blank" rel="noopener noreferrer">Open ${esc(sourceName(p.listing_url))} listing ↗</a>
+          </div>
+        </div>
+        <div class="score-block level-${scoreLevel}" aria-label="Match score ${p.currentScore} out of 100"><strong>${p.currentScore}</strong><small>match / 100</small><div class="score-line"><i style="width:${p.currentScore}%"></i></div></div>
+        <div class="detail ${detailOpen ? "open" : ""}">
+          <div class="criteria-grid">${p.criteria.map(c => `<div class="criterion level-${c.level}"><div class="criterion-top"><span>${esc(c.label)}</span><span>${c.score}/100</span></div><div class="criterion-bar"><i style="width:${c.score}%"></i></div><p>${esc(c.reason)}</p></div>`).join("")}</div>
+        </div>
+      </article>`;
+    }
+
+    function render() {
+      refreshScores();
+      const items = filteredProperties();
+      document.getElementById("resultCount").textContent = items.length;
+      document.getElementById("listSummary").textContent = `${state.sort === "score" ? "Best match first" : document.getElementById("sort").selectedOptions[0].text} · ${items.length} of ${PROPERTIES.length}`;
+      document.getElementById("downloadShortlist").disabled = state.saved.size === 0;
+      document.querySelectorAll("[data-filter]").forEach(btn => btn.setAttribute("aria-pressed", String(state[btn.dataset.filter])));
+      const host = document.getElementById("properties");
+      host.innerHTML = items.length ? items.map(propertyMarkup).join("") : `<div class="empty"><h3>Nothing survives that combination.</h3><p>Clear a filter or lower one of the evidence thresholds.</p></div>`;
+    }
+
+    function renderHero() {
+      const knownPrices = PROPERTIES.map(p => p.price_gbp).filter(v => v != null).sort((a, b) => a - b);
+      const median = knownPrices.length ? knownPrices[Math.floor(knownPrices.length / 2)] : null;
+      const largest = Math.max(...PROPERTIES.map(p => p.land_acres || 0));
+      document.getElementById("heroCount").textContent = PROPERTIES.length;
+      document.getElementById("workshopCount").textContent = PROPERTIES.filter(p => (p.workshop_score ?? 0) >= 70).length;
+      document.getElementById("isolatedCount").textContent = PROPERTIES.filter(p => (p.isolation_score ?? 0) >= 70).length;
+      document.getElementById("medianPrice").textContent = median ? money(median).replace(",000", "k") : "—";
+      document.getElementById("largestPlot").textContent = largest ? `${largest} ac` : "—";
+    }
+
+    function resetFilters() {
+      Object.assign(state, { search: "", area: "All", maxPrice: 350000, minBeds: 2, sort: "score", workshop: false, isolation: false, catSafe: false, moveIn: false, shortlist: false });
+      document.getElementById("search").value = ""; document.getElementById("area").value = "All"; document.getElementById("maxPrice").value = "350000"; document.getElementById("minBeds").value = "2"; document.getElementById("sort").value = "score";
+      render();
+    }
+
+    function downloadShortlist() {
+      const rows = ENRICHED.filter(p => state.saved.has(p.id)).sort((a, b) => b.currentScore - a.currentScore);
+      if (!rows.length) return;
+      const quote = value => `"${String(value ?? "").replaceAll('"', '""')}"`;
+      const csv = ["Property,Area,Locality,Price,Bedrooms,Bathrooms,Match,Drive from Thurso,Land acres,Workshop evidence,Isolation evidence,Cat-safety evidence,Listing"].concat(rows.map(p => [p.title,p.area,p.locality,p.price_gbp ?? p.price_status,p.bedrooms,p.bathrooms,p.currentScore,p.thurso_drive_minutes,p.land_acres,p.workshop_notes || p.garage_notes,p.isolation_notes,p.cat_safety_notes,p.listing_url].map(quote).join(","))).join("\n");
+      const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+      const a = document.createElement("a"); a.href = url; a.download = "caithness-sutherland-shortlist.csv"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    document.addEventListener("input", event => {
+      const t = event.target;
+      if (t.id === "search") { state.search = t.value; render(); }
+      if (t.matches("[data-weight]")) { const key = t.dataset.weight; state.weights[key] = Number(t.value); document.getElementById(`o-${key}`).textContent = t.value; render(); }
+    });
+    document.addEventListener("change", event => {
+      const t = event.target;
+      if (t.id === "area") state.area = t.value;
+      if (t.id === "maxPrice") state.maxPrice = Number(t.value);
+      if (t.id === "minBeds") state.minBeds = Number(t.value);
+      if (t.id === "sort") state.sort = t.value;
+      if (["area","maxPrice","minBeds","sort"].includes(t.id)) render();
+    });
+    document.addEventListener("click", event => {
+      const filter = event.target.closest("[data-filter]");
+      if (filter) { state[filter.dataset.filter] = !state[filter.dataset.filter]; render(); return; }
+      const save = event.target.closest(".save-property");
+      if (save) { const id = Number(save.dataset.id); state.saved.has(id) ? state.saved.delete(id) : state.saved.add(id); render(); return; }
+      const detail = event.target.closest(".detail-toggle");
+      if (detail) { const id = Number(detail.dataset.id); state.expanded.has(id) ? state.expanded.delete(id) : state.expanded.add(id); render(); return; }
+      if (event.target.closest("#clearFilters")) resetFilters();
+      if (event.target.closest("#resetWeights")) { state.weights = { ...DEFAULT_WEIGHTS }; renderWeights(); render(); }
+      if (event.target.closest("#downloadShortlist")) downloadShortlist();
+    });
+
+    renderHero(); renderWeights(); render();
+  </script>
+</body>
+</html>
