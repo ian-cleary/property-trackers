@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Western Isles Property Tracker (Snapshot)</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #eef2ef;
+      --paper: #ffffff;
+      --ink: #17201f;
+      --muted: #5b6866;
+      --line: #cbd5d1;
+      --soft: #e5ece8;
+      --accent: #086b66;
+      --accent-ink: #ffffff;
+      --accent-soft: #d9ebe7;
+      --amber: #9a5c0a;
+      --amber-soft: #faead0;
+      --danger: #9a3e35;
+      --danger-soft: #f8e2df;
+      --shadow: 0 18px 55px rgba(28, 48, 44, .11);
+      --radius: 18px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101817;
+        --paper: #172220;
+        --ink: #edf4f1;
+        --muted: #aab8b4;
+        --line: #344542;
+        --soft: #21302d;
+        --accent: #77c9bf;
+        --accent-ink: #0d2421;
+        --accent-soft: #1e3c38;
+        --amber: #f0b85e;
+        --amber-soft: #3d2f19;
+        --danger: #f0a39a;
+        --danger-soft: #3b2523;
+        --shadow: 0 20px 60px rgba(0, 0, 0, .3);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { min-width: 0; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+    button, input, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--bg);
+    }
+    .gate[hidden] { display: none; }
+    .gate-card {
+      width: min(440px, 100%);
+      background: var(--paper);
+      border-top: 6px solid var(--accent);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 6vw, 42px);
+    }
+    .gate-mark {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--accent-ink);
+      background: var(--accent);
+      margin-bottom: 22px;
+    }
+    .gate h1 {
+      margin: 0 0 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 8vw, 40px);
+      font-weight: 500;
+      letter-spacing: -.035em;
+      line-height: 1.05;
+    }
+    .gate p { margin: 0 0 22px; color: var(--muted); }
+    .field-label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 750;
+    }
+    .gate-row { display: flex; gap: 8px; }
+    .gate input {
+      min-width: 0;
+      flex: 1;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 12px 13px;
+      outline: none;
+    }
+    .gate input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .primary {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 17px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .gate-error { min-height: 20px; margin-top: 10px !important; color: var(--danger) !important; font-weight: 700; font-size: 13px; }
+
+    .app[hidden] { display: none; }
+    .app { min-height: 100vh; }
+    .mast {
+      padding: clamp(28px, 5vw, 58px) max(20px, calc((100vw - 1180px) / 2));
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+    .scope-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .scope-line span { display: inline-flex; align-items: center; gap: 7px; }
+    .scope-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .mast h1 {
+      max-width: 760px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(35px, 6.2vw, 68px);
+      font-weight: 500;
+      line-height: .98;
+      letter-spacing: -.052em;
+    }
+    .mast-copy {
+      max-width: 730px;
+      margin: 19px 0 0;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 19px);
+    }
+    .snapshot-note {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 22px;
+      padding: 9px 11px;
+      background: var(--amber-soft);
+      color: var(--amber);
+      font-size: 13px;
+      font-weight: 750;
+      border-radius: 8px;
+    }
+
+    .workspace {
+      width: min(1180px, calc(100% - 40px));
+      margin: 24px auto 70px;
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .filters {
+      position: sticky;
+      top: 16px;
+      padding: 20px;
+    }
+    .filters h2 { margin: 0 0 17px; font-size: 18px; }
+    .filter-group { padding: 16px 0; border-top: 1px solid var(--line); }
+    .filter-group:first-of-type { border-top: 0; padding-top: 0; }
+    .filter-title { margin: 0 0 10px; font-size: 13px; font-weight: 800; color: var(--muted); }
+    .chips { display: flex; gap: 7px; flex-wrap: wrap; }
+    .chip {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .chip.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .field-row label, .select-wrap label { min-width: 0; }
+    .filters input[type="number"], .filters select, .toolbar select, .toolbar input {
+      width: 100%; min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 10px 11px;
+      outline: none;
+    }
+    .slider-row { margin-top: 11px; }
+    .slider-head { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; font-weight: 700; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .reset {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: transparent;
+      color: var(--ink);
+      padding: 10px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .session-note { margin: 12px 0 0; color: var(--muted); font-size: 12px; }
+
+    .content { min-width: 0; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .metric {
+      padding: 16px 17px;
+      background: var(--paper);
+      border-top: 3px solid var(--accent);
+    }
+    .metric-value { display: block; font-family: Georgia, serif; font-size: 28px; line-height: 1; }
+    .metric-label { display: block; margin-top: 7px; color: var(--muted); font-size: 12px; font-weight: 750; }
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 180px;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .toolbar input { background: var(--paper); }
+    .results-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: end;
+      margin: 18px 2px 10px;
+    }
+    .results-line h2 { margin: 0; font-size: 18px; }
+    .results-line p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .listing-grid { display: grid; gap: 14px; }
+    .listing {
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 5px 20px rgba(23, 32, 31, .035);
+    }
+    .listing-main { padding: 20px; }
+    .listing-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+    }
+    .place { margin: 0 0 6px; color: var(--accent); font-size: 12px; font-weight: 850; }
+    .listing h3 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(21px, 3vw, 28px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+    }
+    .price { margin-top: 9px; font-size: 17px; font-weight: 850; }
+    .price small { font-size: 11px; color: var(--muted); font-weight: 700; }
+    .score {
+      width: 68px; height: 68px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) calc(var(--score) * 1%), var(--soft) 0);
+      position: relative;
+      flex: none;
+    }
+    .score::before {
+      content: ""; position: absolute; inset: 6px;
+      border-radius: 50%; background: var(--paper);
+    }
+    .score span { position: relative; font-size: 18px; font-weight: 900; }
+    .score-label { position: relative; display: block; font-size: 8px !important; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-top: -6px; }
+    .fact-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0 0; }
+    .fact {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 7px; padding: 7px 9px;
+      background: var(--soft); color: var(--ink);
+      font-size: 12px; font-weight: 750;
+    }
+    .fact.good { background: var(--accent-soft); color: var(--accent); }
+    .fact.caution { background: var(--amber-soft); color: var(--amber); }
+    .fact svg { width: 14px; height: 14px; flex: none; }
+    .description { margin: 16px 0 0; color: var(--muted); font-size: 14px; }
+    .criteria {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      background: var(--line);
+      border-radius: 11px;
+      overflow: hidden;
+    }
+    .criterion { background: var(--paper); padding: 11px; min-width: 0; }
+    .criterion-name { color: var(--muted); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+    .criterion-value { margin-top: 4px; font-size: 12px; font-weight: 850; }
+    .criterion-value.good { color: var(--accent); }
+    .criterion-value.caution { color: var(--amber); }
+    .listing-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 20px;
+      border-top: 1px solid var(--line);
+      background: color-mix(in srgb, var(--paper) 88%, var(--bg));
+    }
+    .listing-actions a, .star-btn, .details-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      min-height: 40px;
+      border-radius: 9px;
+      padding: 9px 12px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+    .listing-actions a { background: var(--accent); color: var(--accent-ink); }
+    .star-btn, .details-btn { border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+    .star-btn.active { color: var(--amber); border-color: var(--amber); background: var(--amber-soft); }
+    .details-btn { margin-left: auto; }
+    .evidence { display: none; padding: 0 20px 20px; background: var(--paper); }
+    .listing.open .evidence { display: block; }
+    .evidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .evidence-item { padding: 12px; background: var(--bg); border-radius: 9px; }
+    .evidence-item strong { display: block; margin-bottom: 4px; font-size: 12px; }
+    .evidence-item p { margin: 0; color: var(--muted); font-size: 12px; }
+    .empty { padding: 34px; text-align: center; background: var(--paper); border: 1px dashed var(--line); border-radius: var(--radius); }
+    .empty h3 { margin: 0 0 7px; }
+    .empty p { margin: 0; color: var(--muted); }
+    .footer-note { margin: 24px 2px 0; color: var(--muted); font-size: 12px; }
+
+    .toast {
+      position: fixed; right: 18px; bottom: 18px; z-index: 10;
+      max-width: min(360px, calc(100vw - 36px));
+      background: var(--ink); color: var(--paper);
+      border-radius: 10px; padding: 11px 14px;
+      font-size: 13px; font-weight: 750;
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 860px) {
+      .workspace { grid-template-columns: 1fr; }
+      .filters { position: static; }
+      .criteria { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 580px) {
+      .mast { padding-left: 18px; padding-right: 18px; }
+      .workspace { width: calc(100% - 24px); margin-top: 12px; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .metric:last-child { grid-column: 1 / -1; }
+      .toolbar { grid-template-columns: 1fr; }
+      .listing-main { padding: 16px; }
+      .listing-head { grid-template-columns: minmax(0, 1fr) 60px; gap: 10px; }
+      .score { width: 58px; height: 58px; }
+      .score span { font-size: 16px; }
+      .criteria { grid-template-columns: 1fr 1fr; }
+      .listing-actions { padding: 12px 16px; flex-wrap: wrap; }
+      .details-btn { margin-left: 0; }
+      .evidence { padding: 0 16px 16px; }
+      .evidence-grid { grid-template-columns: 1fr; }
+      .gate-row { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <section class="mast">
+      <div class="scope-line">
+        <span><i class="scope-dot"></i> North Uist prioritised</span>
+        <span>Berneray · Benbecula · Grimsay</span>
+      </div>
+      <h1>Eight homes worth a closer look.</h1>
+      <p class="mast-copy">A focused shortlist for space, quiet roads and serious workshop potential — with two-bedroom homes kept in the running.</p>
+      <div class="snapshot-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Snapshot captured 17 September 2026 · check the source listing for availability
+      </div>
+    </section>
+
+    <div class="workspace">
+      <aside class="filters panel" aria-label="Filters and scoring">
+        <h2>Refine the shortlist</h2>
+
+        <div class="filter-group">
+          <p class="filter-title">Island</p>
+          <div class="chips" id="island-chips">
+            <button class="chip active" type="button" data-island="All">All</button>
+            <button class="chip" type="button" data-island="North Uist">North Uist</button>
+            <button class="chip" type="button" data-island="Berneray">Berneray</button>
+            <button class="chip" type="button" data-island="Benbecula">Benbecula</button>
+            <button class="chip" type="button" data-island="Grimsay">Grimsay</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <p class="filter-title">Numbers</p>
+          <div class="field-row">
+            <label><span class="field-label">Max price</span><input id="budget" type="number" min="0" step="5000" value="350000" aria-label="Maximum price in pounds" /></label>
+            <label><span class="field-label">Min beds</span><select id="beds"><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></label>
+          </div>
+          <label style="display:block;margin-top:10px"><span class="field-label">Equity assumption</span><input id="equity" type="number" min="0" step="5000" value="200000" aria-label="Equity assumption in pounds" /></label>
+        </div>
+
+        <div class="filter-group">
+          <p class="filter-title">Scorecard weighting</p>
+          <div class="slider-row"><div class="slider-head"><span>Move-in condition</span><span id="condition-out">4</span></div><input id="condition-weight" type="range" min="1" max="5" value="4" /></div>
+          <div class="slider-row"><div class="slider-head"><span>Separation</span><span id="isolation-out">5</span></div><input id="isolation-weight" type="range" min="1" max="5" value="5" /></div>
+          <div class="slider-row"><div class="slider-head"><span>Cat-safe road</span><span id="road-out">5</span></div><input id="road-weight" type="range" min="1" max="5" value="5" /></div>
+          <div class="slider-row"><div class="slider-head"><span>Workshop / build site</span><span id="workshop-out">5</span></div><input id="workshop-weight" type="range" min="1" max="5" value="5" /></div>
+        </div>
+
+        <button class="reset" id="reset" type="button">Reset filters</button>
+        <p class="session-note">Stars and score changes last for this visit only.</p>
+      </aside>
+
+      <section class="content">
+        <div class="metrics" aria-label="Snapshot summary">
+          <div class="metric"><span class="metric-value" id="metric-count">8</span><span class="metric-label">matching homes</span></div>
+          <div class="metric"><span class="metric-value" id="metric-budget">3</span><span class="metric-label">known within budget</span></div>
+          <div class="metric"><span class="metric-value" id="metric-workshop">3</span><span class="metric-label">with workshop potential</span></div>
+        </div>
+
+        <div class="toolbar">
+          <input id="search" type="search" placeholder="Search place or description" aria-label="Search properties" />
+          <select id="sort" aria-label="Sort properties">
+            <option value="score">Best fit</option>
+            <option value="price">Price: low to high</option>
+            <option value="beds">Most bedrooms</option>
+            <option value="island">Island</option>
+          </select>
+        </div>
+
+        <div class="results-line">
+          <h2>Shortlist</h2>
+          <p id="results-label">8 properties</p>
+        </div>
+        <div class="listing-grid" id="listing-grid"></div>
+        <p class="footer-note">Scores are a comparison aid based only on the evidence captured in each source result. Unknown details are marked for checking rather than guessed. Prices and particulars may have changed since the snapshot.</p>
+      </section>
+    </div>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const properties = [
+      {
+        id: 32,
+        url: "https://www.rightmove.co.uk/properties/173603243",
+        title: "3-bedroom detached house, Isle of North Uist",
+        island: "North Uist", locality: "Isle of North Uist", price: null, priceLabel: "Price TBC", beds: 3, baths: 1,
+        condition: "Very good decorative order", conditionLevel: 1,
+        isolation: "Some evidence", isolationLevel: .68,
+        road: "Quiet road; exact position unknown", roadLevel: .58,
+        workshop: "Powered timber shed", workshopLevel: .58,
+        workshopPotential: true,
+        summary: "A well-presented detached home with fibre broadband, a multi-fuel stove and generous gardens wrapping around the house. The shore is within walking distance and Baleshare Beach is a short drive away.",
+        isolationNotes: "Generous garden grounds wrap around the house, though the listing also mentions neighbours and does not give a measured separation.",
+        roadNotes: "The source describes a quiet road, but does not confirm an end-of-road position or distance from a main road.",
+        workshopNotes: "Timber shed with electricity and a polytunnel. Dimensions and multi-vehicle suitability are not established.",
+        settingNotes: "Peaceful setting, walking distance to the shore.",
+        land: null, seaView: false
+      },
+      {
+        id: 34,
+        url: "https://www.rightmove.co.uk/properties/149336495",
+        title: "Sleatabhal, 8 Sollas",
+        island: "North Uist", locality: "Sollas", price: 245000, priceLabel: "Offers over £245,000", beds: 2, baths: 2,
+        condition: "Renovated to a high standard", conditionLevel: 1,
+        isolation: "Some evidence", isolationLevel: .66,
+        road: "Township-road access", roadLevel: .38,
+        workshop: "Stone ruin; consent required", workshopLevel: .62,
+        workshopPotential: true,
+        summary: "A renovated traditional croft house with open-plan living, two bedrooms, a study/nursery and two shower rooms. A rear stone ruin offers possible future utility, subject to planning.",
+        isolationNotes: "Described as a quiet rural location with about 0.4 acre of garden, but neighbour distances are not stated.",
+        roadNotes: "A gravel drive leads from the township road; there is no evidence of an end-of-road setting.",
+        workshopNotes: "The stone ruin may offer conversion potential subject to planning. The garden is about 0.4 acre, but a large workshop site is not confirmed.",
+        settingNotes: "Quiet rural location with garden ground.",
+        land: .4, seaView: false
+      },
+      {
+        id: 36,
+        url: "https://www.rightmove.co.uk/properties/170500151",
+        title: "Muileann Dubh, 17 Griminish",
+        island: "Benbecula", locality: "Griminish", price: null, priceLabel: "Price TBC", beds: 4, baths: 1,
+        condition: "Not established", conditionLevel: .34,
+        isolation: "Some evidence", isolationLevel: .64,
+        road: "Away from the A865", roadLevel: .84,
+        workshop: "No evidence captured", workshopLevel: .2,
+        workshopPotential: false,
+        summary: "A four-bedroom detached bungalow with a concrete drive, parking and stock-fenced garden ground. Access continues along a side road and then a track across neighbouring croftland.",
+        isolationNotes: "Good-sized fenced garden and a peaceful rural outlook, but no measured separation from nearby houses.",
+        roadNotes: "Directions leave the A865 for a side road, then continue for about a mile and across a croft track — useful evidence of being away from the main road.",
+        workshopNotes: "No workshop, barn, shed or explicit build-site evidence was captured.",
+        settingNotes: "Peaceful location with rural views and access to Balivanich amenities.",
+        land: null, seaView: false
+      },
+      {
+        id: 33,
+        url: "https://www.rightmove.co.uk/properties/163534478",
+        title: "Strome, Baymore",
+        island: "Grimsay", locality: "Baymore", price: null, priceLabel: "Price TBC", beds: 4, baths: 2,
+        condition: "Not established", conditionLevel: .34,
+        isolation: "Private elevated position", isolationLevel: .74,
+        road: "Not established", roadLevel: .3,
+        workshop: "Concrete workshop, 4 × 6.5m", workshopLevel: .76,
+        workshopPotential: true,
+        summary: "A four-bedroom detached house in an elevated position above Baymore, with secure gardens, sea views and gravel parking for several vehicles. The concrete workshop is the clearest existing workspace in this snapshot.",
+        isolationNotes: "The source calls the position private and elevated, with good-sized gardens; exact neighbour separation is not stated.",
+        roadNotes: "The captured source text does not establish the road position or traffic level.",
+        workshopNotes: "Concrete workshop with steel-profile roof, measuring 4m × 6.5m. Useful existing space, but not large enough for the full present fleet and motorhome without expansion.",
+        settingNotes: "Private elevated setting above Baymore, with sea views.",
+        land: null, seaView: true
+      },
+      {
+        id: 35,
+        url: "https://mail.uistproperty.co.uk/components/com_jomcomdev/files/2026/07/30/73-Sales-Schedule-2B_Hougharry.pdf",
+        title: "Croft tenancy, 2B Hougharry",
+        island: "North Uist", locality: "Hougharry", price: null, priceLabel: "Price TBC", beds: 2, baths: 2,
+        condition: "Not established", conditionLevel: .34,
+        isolation: "Not established", isolationLevel: .28,
+        road: "Not established", roadLevel: .3,
+        workshop: "Outbuilding details superseded", workshopLevel: .16,
+        workshopPotential: false,
+        summary: "An assignation of croft tenancy including a two-bedroom house, lounge with open fire, utility room, shower room and family bathroom. Land and outbuilding information from an earlier sale is no longer current.",
+        isolationNotes: "The captured source text does not describe separation from neighbouring houses.",
+        roadNotes: "The captured source text does not describe the road position.",
+        workshopNotes: "No reliable current workshop or build-site evidence. Earlier land and outbuilding information is explicitly superseded.",
+        settingNotes: "Croft tenancy in Hougharry.",
+        land: null, seaView: false
+      },
+      {
+        id: 37,
+        url: "https://www.rightmove.co.uk/properties/89912784",
+        title: "3-bedroom detached bungalow, Griminish",
+        island: "Benbecula", locality: "Griminish", price: null, priceLabel: "Price TBC", beds: 3, baths: 1,
+        condition: "Not established", conditionLevel: .3,
+        isolation: "Not established", isolationLevel: .25,
+        road: "Not established", roadLevel: .28,
+        workshop: "No evidence captured", workshopLevel: .2,
+        workshopPotential: false,
+        summary: "A three-bedroom detached bungalow. The captured result carried little property-specific detail, so condition, land, road position and outbuildings all need checking at source.",
+        isolationNotes: "No information on separation from neighbouring houses was captured.",
+        roadNotes: "No road-position information was captured.",
+        workshopNotes: "No workshop, barn, shed or build-site information was captured.",
+        settingNotes: "Setting details were not established.",
+        land: null, seaView: false
+      },
+      {
+        id: 30,
+        url: "https://www.rightmove.co.uk/properties/170463470",
+        title: "Park Cottage, Claddach Illeray",
+        island: "North Uist", locality: "Claddach Illeray", price: 195000, priceLabel: "Offers over £195,000", beds: 3, baths: 2,
+        condition: "Move-in condition", conditionLevel: .94,
+        isolation: "Not established", isolationLevel: .32,
+        road: "Not established", roadLevel: .3,
+        workshop: "No garage; garden potential untested", workshopLevel: .34,
+        workshopPotential: false,
+        summary: "A three-bedroom, two-bathroom cottage with sea views, good-sized garden grounds and off-street parking to the side. No garage is listed.",
+        isolationNotes: "Good-sized garden grounds are noted, but separation from neighbouring houses is not established.",
+        roadNotes: "Road position and traffic level were not captured.",
+        workshopNotes: "No garage. Garden grounds may merit investigation, but suitability for a substantial new workshop is not established.",
+        settingNotes: "Rural setting with sea views.",
+        land: null, seaView: true
+      },
+      {
+        id: 31,
+        url: "https://www.rightmove.co.uk/properties/174138548",
+        title: "8 Knockquien",
+        island: "North Uist", locality: "Knockquien", price: 230000, priceLabel: "Offers over £230,000", beds: 3, baths: 2,
+        condition: "Fully renovated", conditionLevel: 1,
+        isolation: "Not established", isolationLevel: .32,
+        road: "Not established", roadLevel: .3,
+        workshop: "No garage; garden potential untested", workshopLevel: .34,
+        workshopPotential: false,
+        summary: "A fully renovated three-bedroom home insulated to new-build standard, with sea views, good-sized garden grounds and parking to the side. No garage is listed.",
+        isolationNotes: "Good-sized garden grounds are noted, but separation from neighbouring houses is not established.",
+        roadNotes: "Road position and traffic level were not captured.",
+        workshopNotes: "No garage. The garden deserves a planning and access check before treating it as a credible large-workshop site.",
+        settingNotes: "Rural setting with sea views.",
+        land: null, seaView: true
+      }
+    ];
+
+    const state = {
+      island: "All",
+      budget: 350000,
+      beds: 2,
+      equity: 200000,
+      query: "",
+      sort: "score",
+      weights: { condition: 4, isolation: 5, road: 5, workshop: 5 },
+      starred: new Set()
+    };
+
+    const icons = {
+      bed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 18v-8M21 18v-6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v6M3 14h18M5 10V7h4a2 2 0 0 1 2 2v1"/></svg>',
+      bath: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3ZM7 12V6a3 3 0 0 1 6 0"/><path d="M14 6h2"/></svg>',
+      land: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 20V9l8-5 8 5v11M8 20v-6h8v6"/></svg>',
+      view: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg>',
+      star: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg>',
+      out: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg>'
+    };
+
+    function fmtGBP(value) {
+      return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(value);
+    }
+
+    function score(p) {
+      const location = p.island === "North Uist" ? 1 : .76;
+      const beds = p.beds >= 3 ? 1 : .78;
+      const weighted = location * 4 + beds * 2 + p.conditionLevel * state.weights.condition + p.isolationLevel * state.weights.isolation + p.roadLevel * state.weights.road + p.workshopLevel * state.weights.workshop;
+      const total = 6 + Object.values(state.weights).reduce((a, b) => a + b, 0);
+      return Math.round((weighted / total) * 100);
+    }
+
+    function levelClass(level) { return level >= .72 ? "good" : "caution"; }
+    function financing(p) {
+      if (p.price == null) return "Price to confirm";
+      const gap = p.price - state.equity;
+      return gap > 0 ? `${fmtGBP(gap)} above equity` : `${fmtGBP(Math.abs(gap))} equity left`;
+    }
+
+    function card(p) {
+      const s = score(p);
+      const starred = state.starred.has(p.id);
+      const landFact = p.land ? `<span class="fact good">${icons.land}${p.land} acre</span>` : "";
+      const viewFact = p.seaView ? `<span class="fact good">${icons.view}Sea view</span>` : "";
+      return `
+        <article class="listing" data-id="${p.id}">
+          <div class="listing-main">
+            <div class="listing-head">
+              <div>
+                <p class="place">${p.island} · ${p.locality}</p>
+                <h3>${p.title}</h3>
+                <div class="price">${p.priceLabel} <small>· ${financing(p)}</small></div>
+              </div>
+              <div class="score" style="--score:${s}" aria-label="Fit score ${s} out of 100"><div><span>${s}</span><span class="score-label">fit</span></div></div>
+            </div>
+            <div class="fact-row">
+              <span class="fact">${icons.bed}${p.beds} beds</span>
+              <span class="fact">${icons.bath}${p.baths} baths</span>
+              ${landFact}${viewFact}
+            </div>
+            <p class="description">${p.summary}</p>
+            <div class="criteria">
+              <div class="criterion"><div class="criterion-name">Condition</div><div class="criterion-value ${levelClass(p.conditionLevel)}">${p.condition}</div></div>
+              <div class="criterion"><div class="criterion-name">Separation</div><div class="criterion-value ${levelClass(p.isolationLevel)}">${p.isolation}</div></div>
+              <div class="criterion"><div class="criterion-name">Road</div><div class="criterion-value ${levelClass(p.roadLevel)}">${p.road}</div></div>
+              <div class="criterion"><div class="criterion-name">Workshop</div><div class="criterion-value ${levelClass(p.workshopLevel)}">${p.workshop}</div></div>
+            </div>
+          </div>
+          <div class="listing-actions">
+            <a href="${p.url}" target="_blank" rel="noopener noreferrer">View source ${icons.out}</a>
+            <button class="star-btn ${starred ? "active" : ""}" type="button" data-star="${p.id}" aria-pressed="${starred}">${icons.star}${starred ? "Starred" : "Star"}</button>
+            <button class="details-btn" type="button" data-details="${p.id}" aria-expanded="false">Evidence</button>
+          </div>
+          <div class="evidence">
+            <div class="evidence-grid">
+              <div class="evidence-item"><strong>Space around it</strong><p>${p.isolationNotes}</p></div>
+              <div class="evidence-item"><strong>Road position</strong><p>${p.roadNotes}</p></div>
+              <div class="evidence-item"><strong>Workshop fit</strong><p>${p.workshopNotes}</p></div>
+              <div class="evidence-item"><strong>Setting</strong><p>${p.settingNotes}</p></div>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function filtered() {
+      const q = state.query.trim().toLowerCase();
+      const list = properties.filter(p => {
+        const islandOk = state.island === "All" || p.island === state.island;
+        const bedOk = p.beds >= state.beds;
+        const budgetOk = p.price == null || p.price <= state.budget;
+        const queryOk = !q || `${p.title} ${p.island} ${p.locality} ${p.summary} ${p.workshop}`.toLowerCase().includes(q);
+        return islandOk && bedOk && budgetOk && queryOk;
+      });
+      list.sort((a, b) => {
+        if (state.starred.has(a.id) !== state.starred.has(b.id)) return state.starred.has(a.id) ? -1 : 1;
+        if (state.sort === "price") return (a.price ?? Infinity) - (b.price ?? Infinity);
+        if (state.sort === "beds") return b.beds - a.beds;
+        if (state.sort === "island") return a.island.localeCompare(b.island) || score(b) - score(a);
+        return score(b) - score(a);
+      });
+      return list;
+    }
+
+    function render() {
+      const list = filtered();
+      const grid = document.getElementById("listing-grid");
+      grid.innerHTML = list.length ? list.map(card).join("") : `<div class="empty"><h3>No homes match those filters</h3><p>Try a higher budget, fewer bedrooms or another island.</p></div>`;
+      document.getElementById("results-label").textContent = `${list.length} ${list.length === 1 ? "property" : "properties"}`;
+      document.getElementById("metric-count").textContent = list.length;
+      document.getElementById("metric-budget").textContent = list.filter(p => p.price != null && p.price <= state.budget).length;
+      document.getElementById("metric-workshop").textContent = list.filter(p => p.workshopPotential).length;
+      bindCardActions();
+    }
+
+    function bindCardActions() {
+      document.querySelectorAll("[data-star]").forEach(btn => btn.addEventListener("click", () => {
+        const id = Number(btn.dataset.star);
+        state.starred.has(id) ? state.starred.delete(id) : state.starred.add(id);
+        render();
+        showToast(state.starred.has(id) ? "Starred for this visit" : "Star removed");
+      }));
+      document.querySelectorAll("[data-details]").forEach(btn => btn.addEventListener("click", () => {
+        const article = btn.closest(".listing");
+        const open = article.classList.toggle("open");
+        btn.setAttribute("aria-expanded", open);
+        btn.textContent = open ? "Hide evidence" : "Evidence";
+      }));
+    }
+
+    let toastTimer;
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 1900);
+    }
+
+    render();
+
+    document.getElementById("island-chips").addEventListener("click", e => {
+      const btn = e.target.closest("[data-island]");
+      if (!btn) return;
+      state.island = btn.dataset.island;
+      document.querySelectorAll("[data-island]").forEach(b => b.classList.toggle("active", b === btn));
+      render();
+    });
+    document.getElementById("budget").addEventListener("input", e => { state.budget = Number(e.target.value) || Infinity; render(); });
+    document.getElementById("beds").addEventListener("change", e => { state.beds = Number(e.target.value); render(); });
+    document.getElementById("equity").addEventListener("input", e => { state.equity = Number(e.target.value) || 0; render(); });
+    document.getElementById("search").addEventListener("input", e => { state.query = e.target.value; render(); });
+    document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+
+    ["condition", "isolation", "road", "workshop"].forEach(key => {
+      const input = document.getElementById(`${key}-weight`);
+      input.addEventListener("input", e => {
+        state.weights[key] = Number(e.target.value);
+        document.getElementById(`${key}-out`).textContent = e.target.value;
+        render();
+      });
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      state.island = "All"; state.budget = 350000; state.beds = 2; state.equity = 200000; state.query = ""; state.sort = "score";
+      state.weights = { condition: 4, isolation: 5, road: 5, workshop: 5 };
+      document.getElementById("budget").value = 350000;
+      document.getElementById("beds").value = 2;
+      document.getElementById("equity").value = 200000;
+      document.getElementById("search").value = "";
+      document.getElementById("sort").value = "score";
+      document.querySelectorAll("[data-island]").forEach(b => b.classList.toggle("active", b.dataset.island === "All"));
+      Object.entries(state.weights).forEach(([key, value]) => {
+        document.getElementById(`${key}-weight`).value = value;
+        document.getElementById(`${key}-out`).textContent = value;
+      });
+      render();
+      showToast("Filters reset");
+    });
+  </script>
+</body>
+</html>
