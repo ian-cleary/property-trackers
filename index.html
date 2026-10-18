@@ -2,33 +2,258 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scotland Property Trackers</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eef2ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111917" media="(prefers-color-scheme: dark)">
+<title>HomeTrack — Scotland property shortlists</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23086b66'/%3E%3Cpath d='M16 7l9 8h-3v9h-5v-6h-2v6H9v-9H6z' fill='%23fff'/%3E%3C/svg%3E">
 <style>
-  body { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-         max-width: 640px; margin: 4rem auto; padding: 0 1.5rem; color: #1f2937; }
-  h1 { font-size: 1.6rem; }
-  ul { list-style: none; padding: 0; }
-  li { margin: 1rem 0; }
-  a { display: block; padding: 1rem 1.25rem; border: 1px solid #d1d5db;
-      border-radius: 8px; text-decoration: none; color: #1f2937; }
-  a:hover { border-color: #0f766e; }
-  a strong { display: block; font-size: 1.1rem; }
-  a span { color: #6b7280; font-size: 0.9rem; }
+  /* HomeTrack shell — visual language follows the Western Isles tracker. */
+  :root{
+    --bg:#eef2ef; --paper:#fff; --ink:#17201f; --muted:#5b6866; --line:#cbd5d1;
+    --soft:#e5ece8; --accent:#086b66; --accent-ink:#fff; --accent-soft:#d9ebe7;
+    --danger:#963d35; --radius:14px;
+    --shadow:0 16px 42px rgba(25,47,42,.09);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#111917; --paper:#182320; --ink:#f0f5f3; --muted:#b1bdb9; --line:#3a4945;
+      --soft:#24312e; --accent:#79cfc4; --accent-ink:#0c2521; --accent-soft:#203e39;
+      --danger:#f0a39a;
+      --shadow:0 18px 48px rgba(0,0,0,.32);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Avenir Next",Avenir,"Segoe UI",system-ui,-apple-system,sans-serif;
+    font-size:16px; line-height:1.5;
+    display:flex; flex-direction:column; height:100dvh; overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding:.7rem 1rem .55rem; flex:0 0 auto;
+  }
+  .brandrow{display:flex; align-items:center; gap:.7rem; max-width:1240px; margin:0 auto;}
+  .brandmark{
+    width:38px; height:38px; border-radius:10px; background:var(--accent);
+    display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+  }
+  .brandmark svg{width:24px; height:24px}
+  .brand h1{font-size:1.25rem; margin:0; letter-spacing:.01em}
+  .brand p{margin:0; color:var(--muted); font-size:.82rem}
+  .brand{flex:1 1 auto; min-width:0}
+  .buglink{font-size:.78rem; color:var(--muted); text-decoration:underline; white-space:nowrap}
+
+  nav.tabs{max-width:1240px; margin:.6rem auto 0; display:flex; gap:.5rem}
+  [role=tab]{
+    appearance:none; border:1px solid var(--line); background:var(--soft); color:var(--ink);
+    border-radius:10px 10px 0 0; border-bottom:none;
+    padding:.6rem 1.1rem; font:inherit; font-weight:600; font-size:.95rem;
+    cursor:pointer; min-height:44px;
+  }
+  [role=tab][aria-selected="true"]{background:var(--paper); color:var(--accent); box-shadow:inset 0 3px 0 var(--accent)}
+  [role=tab]:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+
+  /* ---------- tab panels ---------- */
+  main{flex:1 1 auto; min-height:0; position:relative; background:var(--paper); border-top:1px solid var(--line)}
+  .tabpanel{position:absolute; inset:0; display:flex; flex-direction:column}
+  .tabpanel[hidden]{display:none}
+  .tabpanel iframe{flex:1 1 auto; width:100%; height:100%; border:0; display:block; background:var(--paper)}
+  .tabnote{
+    flex:0 0 auto; padding:.45rem 1rem; font-size:.78rem; color:var(--muted);
+    background:var(--paper); border-top:1px solid var(--line); text-align:center;
+  }
+  .tabnote a{color:inherit}
+
+  /* ---------- passcode gate ---------- */
+  #gate{
+    position:fixed; inset:0; z-index:50; background:var(--bg);
+    display:flex; align-items:center; justify-content:center; padding:1.5rem;
+  }
+  #gate[hidden]{display:none}
+  .gate-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:2rem; max-width:380px; width:100%; text-align:center;
+  }
+  .gate-card .brandmark{margin:0 auto .8rem}
+  .gate-card h2{margin:.2rem 0 .4rem; font-size:1.3rem}
+  .gate-card p{margin:0 0 1.2rem; color:var(--muted); font-size:.92rem; line-height:1.55}
+  .gate-row{display:flex; gap:.5rem}
+  .gate-row input{
+    flex:1 1 auto; min-width:0; min-height:44px; font:inherit; padding:.55rem .8rem;
+    border:1px solid var(--line); border-radius:10px; background:var(--bg); color:var(--ink);
+  }
+  .gate-row input:focus{border-color:var(--accent); outline:3px solid var(--accent-soft); outline-offset:1px}
+  .gate-row button{
+    min-height:44px; padding:.55rem 1.1rem; font:inherit; font-weight:600; cursor:pointer;
+    border:none; border-radius:10px; background:var(--accent); color:var(--accent-ink);
+  }
+  #gate-error{min-height:1.4em; margin:.7rem 0 0; color:var(--danger); font-size:.88rem}
+  .gate-foot{margin-top:1.4rem; font-size:.78rem; color:var(--muted)}
+  .gate-foot a{color:inherit}
 </style>
 </head>
 <body>
-<h1>Scotland Property Trackers</h1>
-<ul>
-  <li><a href="western-isles/"><strong>Western Isles</strong>
-      <span>Property shortlist — Western Isles</span></a></li>
-  <li><a href="caithness-sutherland/"><strong>Caithness &amp; Sutherland</strong>
-      <span>Property shortlist — Caithness &amp; Sutherland</span></a></li>
-</ul>
 
-<!-- bug report -->
-<div id="bugreport-link" style="text-align:center;padding:18px 12px;font:13px/1.6 system-ui,-apple-system,sans-serif;color:#8a8a8a">
-  Spotted something wrong? <a href="mailto:ian.cleary@gmail.com?subject=Bug%20report%3A%20Scotland%20Property%20Trackers&body=Site%3A%20https%3A//ian-cleary.github.io/property-trackers/%0A%0AWhat%20went%20wrong%3A%0A%0AWhat%20you%20expected%3A%0A" style="color:inherit;text-decoration:underline">Report a bug 🐞</a>
+<!-- passcode gate (same family passcode as the trackers) -->
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="gate-card">
+    <div class="brandmark" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><path d="M16 7l9 8h-3v9h-5v-6h-2v6H9v-9H6z" fill="#fff"/></svg>
+    </div>
+    <h2 id="gate-title">HomeTrack</h2>
+    <p>Scotland property shortlists — Caithness &amp; Sutherland and the Western Isles.<br>Enter the family passcode to continue.</p>
+    <form id="gate-form">
+      <div class="gate-row">
+        <input id="passcode" name="passcode" type="password" autocomplete="current-password"
+               placeholder="Passcode" aria-describedby="gate-error">
+        <button type="submit">Open</button>
+      </div>
+      <p id="gate-error" role="alert"></p>
+    </form>
+    <div class="gate-foot">Spotted something wrong? <a id="gate-buglink" href="mailto:ian.cleary@gmail.com?subject=Bug%20report%3A%20HomeTrack&body=Site%3A%20https%3A//ian-cleary.github.io/property-trackers/%0A%0AWhat%20went%20wrong%3A%0A%0AWhat%20you%20expected%3A%0A">Report a bug 🐞</a></div>
+  </div>
 </div>
+
+<div id="app" hidden>
+  <header>
+    <div class="brandrow">
+      <div class="brandmark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M16 7l9 8h-3v9h-5v-6h-2v6H9v-9H6z" fill="#fff"/></svg>
+      </div>
+      <div class="brand">
+        <h1>HomeTrack</h1>
+        <p>Scotland property shortlists</p>
+      </div>
+      <a class="buglink" href="mailto:ian.cleary@gmail.com?subject=Bug%20report%3A%20HomeTrack&body=Site%3A%20https%3A//ian-cleary.github.io/property-trackers/%0A%0AWhat%20went%20wrong%3A%0A%0AWhat%20you%20expected%3A%0A">Report a bug 🐞</a>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Property shortlists">
+      <button role="tab" id="tab-caithness-sutherland" aria-controls="panel-caithness-sutherland" aria-selected="true">Caithness &amp; Sutherland</button>
+      <button role="tab" id="tab-western-isles" aria-controls="panel-western-isles" aria-selected="false">Western Isles</button>
+    </nav>
+  </header>
+  <main>
+    <section class="tabpanel" id="panel-caithness-sutherland" role="tabpanel" aria-labelledby="tab-caithness-sutherland" tabindex="0">
+      <iframe id="frame-caithness-sutherland" title="Caithness and Sutherland property shortlist" loading="eager"></iframe>
+      <div class="tabnote">Direct link: <a href="caithness-sutherland/">ian-cleary.github.io/property-trackers/caithness-sutherland/</a></div>
+    </section>
+    <section class="tabpanel" id="panel-western-isles" role="tabpanel" aria-labelledby="tab-western-isles" tabindex="0" hidden>
+      <iframe id="frame-western-isles" title="Western Isles property shortlist" loading="lazy"></iframe>
+      <div class="tabnote">Direct link: <a href="western-isles/">ian-cleary.github.io/property-trackers/western-isles/</a></div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var PASSCODE = "thurs0";           /* family passcode, same as the two trackers */
+  var WI_KEY = "western-isles-shortlist-unlocked";
+  var HT_KEY = "hometrack-unlocked";
+
+  var TABS = [
+    { id:"caithness-sutherland", src:"caithness-sutherland/", frame:"frame-caithness-sutherland",
+      tab:"tab-caithness-sutherland", panel:"panel-caithness-sutherland" },
+    { id:"western-isles", src:"western-isles/", frame:"frame-western-isles",
+      tab:"tab-western-isles", panel:"panel-western-isles" }
+  ];
+
+  function $(id){ return document.getElementById(id); }
+
+  /* Skip the tracker pages' own gates: the WI page auto-opens when its
+     sessionStorage key is set; the CS page exposes openTracker() on its
+     window (same origin), which also re-fits its Leaflet map on tab switches. */
+  function unlockTracker(frame){
+    try{
+      var w = frame.contentWindow;
+      if(w && typeof w.openTracker === "function"){ w.openTracker(false); return; }
+    }catch(e){/* cross-origin not expected; fall through */}
+    try{
+      var d = frame.contentDocument;
+      if(!d) return;
+      var gate = d.getElementById("gate");
+      var form = d.getElementById("gate-form");
+      var input = d.getElementById("passcode");
+      if(gate && !gate.hidden && form && input){
+        input.value = PASSCODE;
+        form.dispatchEvent(new Event("submit",{bubbles:true,cancelable:true}));
+      }
+    }catch(e){/* ignore */}
+  }
+
+  function activate(id, push){
+    TABS.forEach(function(t){
+      var active = (t.id === id);
+      $(t.tab).setAttribute("aria-selected", active ? "true" : "false");
+      $(t.panel).hidden = !active;
+      var frame = $(t.frame);
+      if(active){
+        if(!frame.getAttribute("src")){
+          frame.setAttribute("src", t.src);
+          frame.addEventListener("load", function(){ unlockTracker(frame); });
+        } else {
+          /* re-run on every activation: fixes Leaflet sizing after being hidden */
+          unlockTracker(frame);
+        }
+        try{ sessionStorage.setItem("hometrack-tab", id); }catch(e){}
+      }
+    });
+    if(push !== false){
+      try{ history.replaceState(null,"","#"+id); }catch(e){}
+    }
+  }
+
+  TABS.forEach(function(t){
+    $(t.tab).addEventListener("click", function(){ activate(t.id); });
+  });
+
+  function showApp(){
+    $("gate").hidden = true;
+    $("app").hidden = false;
+    var initial = "caithness-sutherland";
+    try{
+      var h = (location.hash||"").replace("#","");
+      if(h === "western-isles" || h === "caithness-sutherland") initial = h;
+      else {
+        var saved = sessionStorage.getItem("hometrack-tab");
+        if(saved === "western-isles" || saved === "caithness-sutherland") initial = saved;
+      }
+    }catch(e){}
+    activate(initial, false);
+  }
+
+  function unlock(){
+    try{
+      sessionStorage.setItem(HT_KEY,"true");
+      sessionStorage.setItem(WI_KEY,"true");   /* lets the WI iframe skip its own gate */
+    }catch(e){}
+    showApp();
+  }
+
+  $("gate-form").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    var input = $("passcode"), err = $("gate-error");
+    if(input.value === PASSCODE){ input.removeAttribute("aria-invalid"); err.textContent=""; unlock(); return; }
+    input.setAttribute("aria-invalid","true");
+    err.textContent = input.value ? "That passcode is not correct." : "Enter the passcode to continue.";
+    input.focus(); input.select();
+  });
+  $("passcode").addEventListener("input", function(ev){
+    ev.currentTarget.removeAttribute("aria-invalid");
+    $("gate-error").textContent = "";
+  });
+
+  var unlocked = false;
+  try{ unlocked = sessionStorage.getItem(HT_KEY) === "true"; }catch(e){}
+  if(unlocked){ showApp(); }
+  else{ requestAnimationFrame(function(){ $("passcode").focus(); }); }
+})();
+</script>
 </body>
 </html>
