@@ -169,11 +169,11 @@
   /* Skip the tracker pages' own gates: the WI page auto-opens when its
      sessionStorage key is set; the CS page exposes openTracker() on its
      window (same origin), which also re-fits its Leaflet map on tab switches. */
-  function unlockTracker(frame){
+  function attemptUnlock(frame){
     try{
       var w = frame.contentWindow;
       if(w && typeof w.openTracker === "function"){ w.openTracker(false); return; }
-    }catch(e){/* cross-origin not expected; fall through */}
+    }catch(e){/* openTracker may throw part-way through its first render; retried below */}
     try{
       var d = frame.contentDocument;
       if(!d) return;
@@ -185,6 +185,38 @@
         form.dispatchEvent(new Event("submit",{bubbles:true,cancelable:true}));
       }
     }catch(e){/* ignore */}
+  }
+
+  /* A framed tracker counts as open only when its gate is hidden, its app
+     is shown AND it has actually rendered content. A first openTracker()
+     call can die mid-render inside a freshly laid-out iframe (leaving the
+     gate hidden but the app empty), so keep retrying briefly until the
+     content is really there. Retries are harmless: both pages treat a
+     repeat open as a map re-fit. */
+  function trackerIsOpen(frame){
+    try{
+      var d = frame.contentDocument;
+      if(!d) return false;
+      var gate = d.getElementById("gate");
+      var app = d.getElementById("app");
+      if(!app || app.hidden) return false;
+      if(gate && !gate.hidden) return false;
+      return !!(app.querySelector("article") || app.querySelector(".card") || app.children.length > 1);
+    }catch(e){ return false; }
+  }
+
+  function unlockTracker(frame){
+    attemptUnlock(frame);
+    if(trackerIsOpen(frame) || frame._unlockTimer) return;
+    var tries = 0;
+    frame._unlockTimer = setInterval(function(){
+      tries++;
+      attemptUnlock(frame);
+      if(trackerIsOpen(frame) || tries >= 20){
+        clearInterval(frame._unlockTimer);
+        frame._unlockTimer = null;
+      }
+    }, 600);
   }
 
   function activate(id, push){
