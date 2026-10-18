@@ -65,11 +65,6 @@
   .tabpanel{position:absolute; inset:0; display:flex; flex-direction:column}
   .tabpanel[hidden]{display:none}
   .tabpanel iframe{flex:1 1 auto; width:100%; height:100%; border:0; display:block; background:var(--paper)}
-  .tabnote{
-    flex:0 0 auto; padding:.45rem 1rem; font-size:.78rem; color:var(--muted);
-    background:var(--paper); border-top:1px solid var(--line); text-align:center;
-  }
-  .tabnote a{color:inherit}
 
   /* ---------- passcode gate ---------- */
   #gate{
@@ -141,11 +136,9 @@
   <main>
     <section class="tabpanel" id="panel-caithness-sutherland" role="tabpanel" aria-labelledby="tab-caithness-sutherland" tabindex="0">
       <iframe id="frame-caithness-sutherland" title="Caithness and Sutherland property shortlist" loading="eager"></iframe>
-      <div class="tabnote">Direct link: <a href="caithness-sutherland/">ian-cleary.github.io/property-trackers/caithness-sutherland/</a></div>
     </section>
     <section class="tabpanel" id="panel-western-isles" role="tabpanel" aria-labelledby="tab-western-isles" tabindex="0" hidden>
       <iframe id="frame-western-isles" title="Western Isles property shortlist" loading="lazy"></iframe>
-      <div class="tabnote">Direct link: <a href="western-isles/">ian-cleary.github.io/property-trackers/western-isles/</a></div>
     </section>
   </main>
 </div>
