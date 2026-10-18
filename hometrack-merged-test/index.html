@@ -30,7 +30,7 @@
     margin:0; background:var(--bg); color:var(--ink);
     font-family:"Avenir Next",Avenir,"Segoe UI",system-ui,-apple-system,sans-serif;
     font-size:16px; line-height:1.5;
-    display:flex; flex-direction:column; height:100dvh; overflow:hidden;
+    display:flex; flex-direction:column; height:100vh; height:100dvh; overflow:hidden;
     -webkit-font-smoothing:antialiased;
   }
 
@@ -1884,7 +1884,7 @@ const ROOT = document.getElementById("cs-app");
       if (!window.L) { showMapFallback(items); return; }
       try {
         if (!propertyMap) {
-          propertyMap = L.map("propertyMap", { scrollWheelZoom: false, zoomControl: true }).setView([58.2, -4.25], 7);
+          propertyMap = L.map("cs-propertyMap", { scrollWheelZoom: false, zoomControl: true }).setView([58.2, -4.25], 7);
           const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 18,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
@@ -2051,16 +2051,16 @@ const ROOT = document.getElementById("cs-app");
 
     document.addEventListener("input", event => {
       const t = event.target;
-      if (t.id === "search") { state.search = t.value; render(); }
+      if (t.id === "cs-search") { state.search = t.value; render(); }
       if (t.matches("[data-weight]")) { const key = t.dataset.weight; state.weights[key] = Number(t.value); document.getElementById(`cs-o-${key}`).textContent = t.value; render(); }
     });
     document.addEventListener("change", event => {
       const t = event.target;
-      if (t.id === "area") state.area = t.value;
-      if (t.id === "maxPrice") state.maxPrice = Number(t.value);
-      if (t.id === "minBeds") state.minBeds = Number(t.value);
-      if (t.id === "sort") state.sort = t.value;
-      if (["area","maxPrice","minBeds","sort"].includes(t.id)) render();
+      if (t.id === "cs-area") state.area = t.value;
+      if (t.id === "cs-maxPrice") state.maxPrice = Number(t.value);
+      if (t.id === "cs-minBeds") state.minBeds = Number(t.value);
+      if (t.id === "cs-sort") state.sort = t.value;
+      if (["cs-area","cs-maxPrice","cs-minBeds","cs-sort"].includes(t.id)) render();
     });
     document.addEventListener("click", event => {
       const filter = event.target.closest("[data-filter]");
