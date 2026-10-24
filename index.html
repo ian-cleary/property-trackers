@@ -1258,7 +1258,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #panel-caithness-sutherland .ht-app .controls-result { min-height:0; margin-left:auto; display:flex; flex-direction:column; align-items:flex-end; gap:2px; color:var(--muted); font-size:12px; }
 #panel-caithness-sutherland .ht-app .controls-result strong { color:var(--ink); }
 #panel-caithness-sutherland .ht-app .property { position:relative; display:block; margin-top:14px; padding:0; overflow:hidden; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); box-shadow:0 5px 20px rgba(26,28,25,.035); }
-#panel-caithness-sutherland .ht-app .rank { position:absolute; top:20px; right:104px; z-index:1; padding:0; color:var(--faint); font:700 12px/1 inherit; }
+#panel-caithness-sutherland .ht-app .rank { position:absolute; top:46px; right:104px; z-index:1; margin:0; padding:0; color:var(--faint); font:700 12px/1 inherit; }
 #panel-caithness-sutherland .ht-app .property-main { padding:20px; }
 #panel-caithness-sutherland .ht-app .property-kicker { padding-right:92px; color:var(--accent-text); font-size:12px; font-weight:800; }
 #panel-caithness-sutherland .ht-app .source { color:var(--muted); }
@@ -1269,7 +1269,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #panel-caithness-sutherland .ht-app .score-block { position:absolute; top:18px; right:20px; width:68px; height:68px; display:grid; place-items:center; border-radius:50%; background:conic-gradient(currentColor calc(var(--score,0)*1%),var(--paper-2) 0); text-align:center; }
 #panel-caithness-sutherland .ht-app .score-block::before { content:""; position:absolute; inset:6px; border-radius:50%; background:var(--paper); }
 #panel-caithness-sutherland .ht-app .score-block strong { position:relative; font:900 18px/1 inherit; letter-spacing:0; }
-#panel-caithness-sutherland .ht-app .score-block small { position:absolute; z-index:1; top:40px; color:var(--muted); font-size:7px; font-weight:800; text-transform:uppercase; }
+#panel-caithness-sutherland .ht-app .score-block small { position:absolute; z-index:1; top:calc(100% + 6px); left:50%; transform:translateX(-50%); width:max-content; white-space:nowrap; line-height:1; color:var(--muted); font-size:7px; font-weight:800; text-transform:uppercase; }
 #panel-caithness-sutherland .ht-app .score-line { display:none; }
 #panel-caithness-sutherland .ht-app .evidence { grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; margin-top:18px; border-radius:11px; overflow:hidden; }
 #panel-caithness-sutherland .ht-app .evidence-item { padding:11px; }
@@ -1321,11 +1321,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #panel-caithness-sutherland .ht-app .map-count { display:none; }
 #panel-caithness-sutherland .ht-app #cs-propertyMap { height:320px; }
 #panel-caithness-sutherland .ht-app .property-main { padding:16px; }
-#panel-caithness-sutherland .ht-app .rank { top:18px; right:85px; }
+#panel-caithness-sutherland .ht-app .rank { top:39px; right:85px; }
 #panel-caithness-sutherland .ht-app .property-kicker { padding-right:70px; }
 #panel-caithness-sutherland .ht-app .property h3 { max-width:calc(100% - 66px); font-size:clamp(21px,7vw,27px); }
 #panel-caithness-sutherland .ht-app .score-block { top:16px; right:16px; width:58px; height:58px; }
-#panel-caithness-sutherland .ht-app .score-block small { top:34px; }
+#panel-caithness-sutherland .ht-app .score-block small { top:calc(100% + 5px); }
 #panel-caithness-sutherland .ht-app .facts { display:flex; }
 #panel-caithness-sutherland .ht-app .facts span { padding:6px 8px; }
 #panel-caithness-sutherland .ht-app .evidence { grid-template-columns:1fr; }
@@ -1721,7 +1721,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       border-radius: 50%; background: var(--paper);
     }
 #panel-western-isles .ht-app .score span { position: relative; font-size: 18px; font-weight: 900; }
-#panel-western-isles .ht-app .score-label { position: relative; display: block; font-size: 8px !important; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-top: -6px; }
+#panel-western-isles .ht-app .score-label { display: block; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; text-align: center; }
 #panel-western-isles .ht-app .fact-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0 0; }
 #panel-western-isles .ht-app .fact {
       display: inline-flex; align-items: center; gap: 6px;
@@ -2353,7 +2353,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       object-fit: cover;
       border-bottom: 1px solid var(--line);
     }
-#panel-western-isles .ht-app .score-label { font-size: 7px !important; letter-spacing: .02em; white-space: nowrap; }
+#panel-western-isles .ht-app .score-label { font-size: 9px; letter-spacing: .05em; white-space: nowrap; }
 #panel-western-isles .ht-app .score-rows { display: grid; gap: 8px; padding-top: 18px; border-top: 1px solid var(--line); }
 #panel-western-isles .ht-app .score-row {
       display: grid;
@@ -2454,10 +2454,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #panel-western-isles .ht-app #wi-results-label strong { color: var(--ink); }
 #panel-western-isles .ht-app .listing { position: relative; }
 #panel-western-isles .ht-app .rank {
-      position: absolute;
-      top: 20px;
-      right: 104px;
-      z-index: 1;
       margin: 0;
       padding: 0;
       border-radius: 0;
@@ -2466,7 +2462,17 @@ svg.leaflet-image-layer.leaflet-interactive path {
       font-size: 12px;
       font-weight: 700;
     }
-#panel-western-isles .ht-app .place { padding-right: 118px; }
+#panel-western-isles .ht-app .score-badge {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-template-rows: auto auto;
+      align-items: center;
+      column-gap: 10px;
+      flex: none;
+    }
+#panel-western-isles .ht-app .score-badge .rank { grid-row: 1; grid-column: 1; }
+#panel-western-isles .ht-app .score-badge .score { grid-row: 1; grid-column: 2; justify-self: center; }
+#panel-western-isles .ht-app .score-badge .score-label { grid-row: 2; grid-column: 2; justify-self: center; margin-top: 5px; }
 #panel-western-isles .ht-app .fact.good { background: var(--soft); color: var(--ink); }
 #panel-western-isles .ht-app .listing-actions a { margin-left: auto; }
 #panel-western-isles .ht-app .details-btn { margin-left: 0; }
@@ -2480,8 +2486,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #panel-western-isles .ht-app .view-toggle button { flex: none; }
 #panel-western-isles .ht-app #wi-filters-panel .toolbar { grid-template-columns: 1fr; }
 #panel-western-isles .ht-app .weights-card { padding: 18px; }
-#panel-western-isles .ht-app .rank { top: 18px; right: 85px; }
-#panel-western-isles .ht-app .place { padding-right: 96px; }
+#panel-western-isles .ht-app .listing-head { grid-template-columns: minmax(0, 1fr) auto; }
 #panel-western-isles .ht-app .results-line h2 { font-size: 34px; }
 #panel-western-isles .ht-app #wi-results-label { max-width: 52%; }
 #panel-western-isles .ht-app .listing-actions a { grid-column: 1 / -1; justify-content: center; margin-left: 0; }
@@ -5216,12 +5221,15 @@ const ROOT = document.getElementById("wi-app");
           <div class="listing-main">
             <div class="listing-head">
               <div>
-                <span class="rank">${String(rank).padStart(2, "0")}</span>
                 <p class="place">${p.island} · ${p.locality}</p>
                 <h3>${p.title}</h3>
                 <div class="price">${p.priceLabel} <small>· ${financing(p)}</small></div>
               </div>
-              <div class="score" style="--score:${s}" aria-label="Match score ${s} out of 100"><div><span>${s}</span><span class="score-label">match / 100</span></div></div>
+              <div class="score-badge">
+                <span class="rank">${String(rank).padStart(2, "0")}</span>
+                <div class="score" style="--score:${s}" aria-label="Match score ${s} out of 100"><span>${s}</span></div>
+                <span class="score-label">match / 100</span>
+              </div>
             </div>
             <div class="fact-row">
               <span class="fact">${icons.bed}${p.beds} beds</span>
