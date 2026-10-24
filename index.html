@@ -3,25 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#eef2ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111917" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FAF7F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#FAF7F1" media="(prefers-color-scheme: dark)">
 <title>HomeTrack — Scotland property shortlists</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23086b66'/%3E%3Cpath d='M16 7l9 8h-3v9h-5v-6h-2v6H9v-9H6z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23D9A441'/%3E%3Cpath d='M16 7l9 8h-3v9h-5v-6h-2v6H9v-9H6z' fill='%23FAF7F1'/%3E%3C/svg%3E">
 <style>
   /* HomeTrack shell — visual language follows the Western Isles tracker. */
   :root{
-    --bg:#eef2ef; --paper:#fff; --ink:#17201f; --muted:#5b6866; --line:#cbd5d1;
-    --soft:#e5ece8; --accent:#086b66; --accent-ink:#fff; --accent-soft:#d9ebe7;
+    --bg:#FAF7F1; --paper:#FFFDF7; --ink:#1A1C19; --muted:#5C6B66; --line:#D8CFBC;
+    --soft:#F3EDE0; --accent:#D9A441; --accent-ink:#1A1C19; --accent-soft:#F7EED3;
     --danger:#963d35; --radius:14px;
     --shadow:0 16px 42px rgba(25,47,42,.09);
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --bg:#111917; --paper:#182320; --ink:#f0f5f3; --muted:#b1bdb9; --line:#3a4945;
-      --soft:#24312e; --accent:#79cfc4; --accent-ink:#0c2521; --accent-soft:#203e39;
-      --danger:#f0a39a;
-      --shadow:0 18px 48px rgba(0,0,0,.32);
+      --bg:#FAF7F1; --paper:#FFFDF7; --ink:#1A1C19; --muted:#5C6B66; --line:#D8CFBC;
+      --soft:#F3EDE0; --accent:#D9A441; --accent-ink:#1A1C19; --accent-soft:#F7EED3;
+      --danger:#963d35;
+      --shadow:0 16px 42px rgba(25,47,42,.09);
     }
   }
   *{box-sizing:border-box}
@@ -95,17 +95,17 @@
 </style>
 <style>
 /* ---- Leaflet overrides (shared, scoped) ---- */
-.ht-app .leaflet-container { font-family: "IBM Plex Sans", sans-serif; color: #182119; }
+.ht-app .leaflet-container { font-family: "IBM Plex Sans", sans-serif; color: #1A1C19; }
 .ht-app .leaflet-popup-content { margin: 14px 16px; min-width: 190px; line-height: 1.45; }
 .ht-app .leaflet-popup-content strong { display: block; margin-bottom: 4px; font: 650 17px/1.15 "Newsreader", Georgia, serif; }
-.ht-app .leaflet-popup-content span { display: block; color: #596358; font-size: 12px; }
+.ht-app .leaflet-popup-content span { display: block; color: #5C6B66; font-size: 12px; }
 .ht-app .leaflet-popup-content a { display: inline-block; margin-top: 7px; color: #a44724; font-size: 12px; font-weight: 600; }
 .ht-app .leaflet-container { font-family:inherit; }
 .ht-app .leaflet-container { font-family:"Avenir Next",Avenir,"Segoe UI",sans-serif; }
 .ht-app .leaflet-container { font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif; }
 .ht-app .leaflet-popup-content { margin: 14px 16px; line-height: 1.45; }
 .ht-app .leaflet-popup-content strong { display: block; margin-bottom: 4px; font-size: 14px; }
-.ht-app .leaflet-popup-content a { color: #086b66; font-weight: 800; }
+.ht-app .leaflet-popup-content a { color: #8f570d; font-weight: 800; }
 .ht-app .leaflet-control-attribution { font-size: 10px; }
 .ht-app .leaflet-touch .leaflet-bar a {
       width: 44px;
@@ -118,17 +118,17 @@
 <style>
 /* ---- cs: app styles (scoped) ---- */
 #panel-caithness-sutherland .ht-app {
-      color-scheme: light dark;
-      --bg: #edf0e9;
-      --paper: #f8f8f3;
-      --paper-2: #e4e9df;
-      --ink: #182119;
-      --muted: #596358;
-      --faint: #7a8278;
-      --line: #c9d0c5;
-      --line-strong: #aeb8aa;
-      --green: #174c37;
-      --green-soft: #dce9df;
+      color-scheme: light;
+      --bg: #FAF7F1;
+      --paper: #FFFDF7;
+      --paper-2: #F3EDE0;
+      --ink: #1A1C19;
+      --muted: #5C6B66;
+      --faint: #71807c;
+      --line: #D8CFBC;
+      --line-strong: #C4B89E;
+      --green: #D9A441;
+      --green-soft: #F7EED3;
       --rust: #a44724;
       --amber: #a46a19;
       --amber-soft: #f3e8cd;
@@ -137,22 +137,22 @@
       --shadow: 0 16px 50px rgba(28, 42, 30, .08);
     }
 #panel-caithness-sutherland .ht-app {
-        --bg: #111612;
-        --paper: #181f1a;
-        --paper-2: #202a22;
-        --ink: #eef2ea;
-        --muted: #b8c1b6;
-        --faint: #8e998e;
-        --line: #334039;
-        --line-strong: #4a584f;
-        --green: #a9d5bd;
-        --green-soft: #203d2f;
-        --rust: #e1825f;
-        --amber: #e1ad5e;
-        --amber-soft: #43351e;
-        --red: #ef8c7e;
-        --red-soft: #462925;
-        --shadow: 0 18px 56px rgba(0, 0, 0, .28);
+        --bg: #FAF7F1;
+        --paper: #FFFDF7;
+        --paper-2: #F3EDE0;
+        --ink: #1A1C19;
+        --muted: #5C6B66;
+        --faint: #71807c;
+        --line: #D8CFBC;
+        --line-strong: #C4B89E;
+        --green: #D9A441;
+        --green-soft: #F7EED3;
+        --rust: #a44724;
+        --amber: #9a5c0a;
+        --amber-soft: #F8EAD3;
+        --red: #963d35;
+        --red-soft: #F7E4E1;
+        --shadow: 0 16px 42px rgba(25,47,42,.09);
       }
 #panel-caithness-sutherland .ht-app * { box-sizing: border-box; }
 #panel-caithness-sutherland .ht-app { scroll-behavior: smooth; }
@@ -510,18 +510,18 @@
 #panel-caithness-sutherland .ht-app .rail-actions { grid-template-columns: 1fr; }
 #panel-caithness-sutherland .ht-app { scroll-behavior: auto; }
 #panel-caithness-sutherland .ht-app {
-      --bg: #f1f4f2; --paper: #ffffff; --paper-2: #e9efec; --ink: #16211f;
-      --muted: #52615e; --faint: #71807c; --line: #d2dcd8; --line-strong: #becbc6;
-      --green: #096e67; --green-soft: #dceeea; --rust: #096e67;
+      --bg: #FAF7F1; --paper: #FFFDF7; --paper-2: #F3EDE0; --ink: #1A1C19;
+      --muted: #5C6B66; --faint: #71807c; --line: #D8CFBC; --line-strong: #C4B89E;
+      --green: #D9A441; --green-soft: #F7EED3; --rust: #D9A441;
       --amber: #8f570d; --amber-soft: #f8ead3; --red: #963d35; --red-soft: #f7e4e1;
       --shadow: 0 16px 42px rgba(25,47,42,.09); --radius: 14px;
     }
 #panel-caithness-sutherland .ht-app {
-        --bg: #111917; --paper: #182320; --paper-2: #24312e; --ink: #f0f5f3;
-        --muted: #b1bdb9; --faint: #94a49f; --line: #3a4945; --line-strong: #4a5b56;
-        --green: #79cfc4; --green-soft: #203e39; --rust: #79cfc4;
-        --amber: #f1ba61; --amber-soft: #3c2f1b; --red: #f0a39a; --red-soft: #3b2523;
-        --shadow: 0 18px 48px rgba(0,0,0,.32);
+        --bg: #FAF7F1; --paper: #FFFDF7; --paper-2: #F3EDE0; --ink: #1A1C19;
+        --muted: #5C6B66; --faint: #71807c; --line: #D8CFBC; --line-strong: #C4B89E;
+        --green: #D9A441; --green-soft: #F7EED3; --rust: #D9A441;
+        --amber: #9a5c0a; --amber-soft: #F8EAD3; --red: #963d35; --red-soft: #F7E4E1;
+        --shadow: 0 16px 42px rgba(25,47,42,.09);
       }
 #panel-caithness-sutherland .ht-app { overflow-x: clip; }
 #panel-caithness-sutherland .ht-app { background: var(--bg); font: 400 16px/1.5 Aptos, "Avenir Next", Avenir, "Segoe UI", sans-serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
@@ -663,18 +663,18 @@
 #panel-caithness-sutherland .ht-app .rail-actions, #panel-caithness-sutherland .ht-app .property-actions { grid-template-columns:1fr; }
 #panel-caithness-sutherland .ht-app .facts { display:grid; grid-template-columns:1fr 1fr; }
 #panel-caithness-sutherland .ht-app {
-      --bg:#eef2ef; --paper:#ffffff; --paper-2:#e5ece8; --ink:#17201f;
-      --muted:#5b6866; --faint:#71807c; --line:#cbd5d1; --line-strong:#b8c6c1;
-      --green:#086b66; --green-soft:#d9ebe7; --rust:#086b66;
-      --accent-ink:#ffffff; --amber:#9a5c0a; --amber-soft:#faead0;
+      --bg:#FAF7F1; --paper:#FFFDF7; --paper-2:#F3EDE0; --ink:#1A1C19;
+      --muted:#5C6B66; --faint:#71807c; --line:#D8CFBC; --line-strong:#C4B89E;
+      --green:#D9A441; --green-soft:#F7EED3; --rust:#D9A441;
+      --accent-ink:#1A1C19; --amber:#9a5c0a; --amber-soft:#faead0;
       --red:#9a3e35; --red-soft:#f8e2df;
     }
 #panel-caithness-sutherland .ht-app {
-        --bg:#101817; --paper:#172220; --paper-2:#21302d; --ink:#edf4f1;
-        --muted:#aab8b4; --faint:#8fa09b; --line:#344542; --line-strong:#455854;
-        --green:#77c9bf; --green-soft:#1e3c38; --rust:#77c9bf;
-        --accent-ink:#0d2421; --amber:#f0b85e; --amber-soft:#3d2f19;
-        --red:#f0a39a; --red-soft:#3b2523;
+        --bg:#FAF7F1; --paper:#FFFDF7; --paper-2:#F3EDE0; --ink:#1A1C19;
+        --muted:#5C6B66; --faint:#71807c; --line:#D8CFBC; --line-strong:#C4B89E;
+        --green:#D9A441; --green-soft:#F7EED3; --rust:#D9A441;
+        --accent-ink:#1A1C19; --amber:#9a5c0a; --amber-soft:#F8EAD3;
+        --red:#963d35; --red-soft:#F7E4E1;
       }
 #panel-caithness-sutherland .ht-app { font-family:"Avenir Next",Avenir,"Segoe UI",sans-serif; }
 #panel-caithness-sutherland .ht-app h1, #panel-caithness-sutherland .ht-app h2, #panel-caithness-sutherland .ht-app h3, #panel-caithness-sutherland .ht-app .metric strong, #panel-caithness-sutherland .ht-app .property h3 { font-family:Georgia,"Times New Roman",serif; }
@@ -717,16 +717,16 @@
 <style>
 /* ---- wi: app styles (scoped) ---- */
 #panel-western-isles .ht-app {
-      color-scheme: light dark;
-      --bg: #eef2ef;
-      --paper: #ffffff;
-      --ink: #17201f;
-      --muted: #5b6866;
-      --line: #cbd5d1;
-      --soft: #e5ece8;
-      --accent: #086b66;
-      --accent-ink: #ffffff;
-      --accent-soft: #d9ebe7;
+      color-scheme: light;
+      --bg: #FAF7F1;
+      --paper: #FFFDF7;
+      --ink: #1A1C19;
+      --muted: #5C6B66;
+      --line: #D8CFBC;
+      --soft: #F3EDE0;
+      --accent: #D9A441;
+      --accent-ink: #1A1C19;
+      --accent-soft: #F7EED3;
       --amber: #9a5c0a;
       --amber-soft: #faead0;
       --danger: #9a3e35;
@@ -735,19 +735,19 @@
       --radius: 18px;
     }
 #panel-western-isles .ht-app {
-        --bg: #101817;
-        --paper: #172220;
-        --ink: #edf4f1;
-        --muted: #aab8b4;
-        --line: #344542;
+        --bg: #FAF7F1;
+        --paper: #FFFDF7;
+        --ink: #1A1C19;
+        --muted: #5C6B66;
+        --line: #D8CFBC;
         --soft: #21302d;
         --accent: #77c9bf;
-        --accent-ink: #0d2421;
+        --accent-ink: #1A1C19;
         --accent-soft: #1e3c38;
-        --amber: #f0b85e;
-        --amber-soft: #3d2f19;
-        --danger: #f0a39a;
-        --danger-soft: #3b2523;
+        --amber: #9a5c0a;
+        --amber-soft: #F8EAD3;
+        --danger: #963d35;
+        --danger-soft: #F7E4E1;
         --shadow: 0 20px 60px rgba(0, 0, 0, .3);
       }
 #panel-western-isles .ht-app * { box-sizing: border-box; }
@@ -1091,15 +1091,15 @@
 #panel-western-isles .ht-app .gate-row { flex-direction: column; }
 #panel-western-isles .ht-app * { scroll-behavior: auto !important; transition: none !important; }
 #panel-western-isles .ht-app {
-      --bg: #eef2ef;
-      --paper: #fff;
-      --ink: #17201f;
-      --muted: #5b6866;
-      --line: #cbd5d1;
-      --soft: #e5ece8;
-      --accent: #086b66;
-      --accent-ink: #fff;
-      --accent-soft: #d9ebe7;
+      --bg: #FAF7F1;
+      --paper: #FFFDF7;
+      --ink: #1A1C19;
+      --muted: #5C6B66;
+      --line: #D8CFBC;
+      --soft: #F3EDE0;
+      --accent: #D9A441;
+      --accent-ink: #1A1C19;
+      --accent-soft: #F7EED3;
       --amber: #8f570d;
       --amber-soft: #f8ead3;
       --danger: #963d35;
@@ -1109,20 +1109,20 @@
       --content-width: 1240px;
     }
 #panel-western-isles .ht-app {
-        --bg: #111917;
-        --paper: #182320;
-        --ink: #f0f5f3;
-        --muted: #b1bdb9;
-        --line: #3a4945;
-        --soft: #24312e;
-        --accent: #79cfc4;
-        --accent-ink: #0c2521;
-        --accent-soft: #203e39;
-        --amber: #f1ba61;
-        --amber-soft: #3c2f1b;
-        --danger: #f0a39a;
-        --danger-soft: #3b2523;
-        --shadow: 0 18px 48px rgba(0, 0, 0, .32);
+        --bg: #FAF7F1;
+        --paper: #FFFDF7;
+        --ink: #1A1C19;
+        --muted: #5C6B66;
+        --line: #D8CFBC;
+        --soft: #F3EDE0;
+        --accent: #D9A441;
+        --accent-ink: #1A1C19;
+        --accent-soft: #F7EED3;
+        --amber: #9a5c0a;
+        --amber-soft: #F8EAD3;
+        --danger: #963d35;
+        --danger-soft: #F7E4E1;
+        --shadow: 0 16px 42px rgba(25,47,42,.09);
       }
 #panel-western-isles .ht-app { overflow-x: clip; }
 #panel-western-isles .ht-app {
@@ -1905,8 +1905,8 @@ const ROOT = document.getElementById("cs-app");
           const marker = L.circleMarker(coords, {
             radius: 8,
             weight: 2,
-            color: isHidden ? "#7a8278" : "#174c37",
-            fillColor: isHidden ? "#7a8278" : "#174c37",
+            color: isHidden ? "#7a8278" : "#D9A441",
+            fillColor: isHidden ? "#7a8278" : "#D9A441",
             fillOpacity: .88
           });
           marker.bindTooltip(esc(p.title), { direction: "top", offset: [0, -8] });
@@ -4089,7 +4089,7 @@ const ROOT = document.getElementById("wi-app");
         L.circleMarker(coords, {
           radius: Math.max(7, Math.min(13, 6 + s / 14)),
           color: p.island === "North Uist" ? "#096e67" : "#7a644e",
-          fillColor: p.island === "North Uist" ? "#79cfc4" : "#d7b078",
+          fillColor: p.island === "North Uist" ? "#D9A441" : "#d7b078",
           fillOpacity: .86,
           weight: 2
         }).bindPopup(`<strong>${p.title}</strong>${p.island} · ${p.locality}<br>${p.priceLabel} · ${p.beds} beds<br><a href="${p.url}" target="_blank" rel="noopener noreferrer">View source</a>`).addTo(markerLayer);
