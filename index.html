@@ -2237,7 +2237,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #panel-western-isles .ht-app .workspace { display: block; }
 #panel-western-isles .ht-app .subtab-strip {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 8px;
       margin-bottom: 20px;
     }
@@ -2273,6 +2273,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #panel-western-isles .ht-app #wi-panel-filters .filter-group:last-of-type { grid-column: 1 / -1; }
 #panel-western-isles .ht-app #wi-panel-filters .reset { align-self: end; margin-top: 16px; }
 #panel-western-isles .ht-app #wi-panel-filters .session-note { align-self: end; margin: 16px 0 0; }
+#panel-western-isles .ht-app .subtab-strip { flex-wrap: wrap; }
 #panel-western-isles .ht-app .subtab { flex: 1 1 calc(50% - 8px); }
 #panel-western-isles .ht-app #wi-panel-summary .mast { padding: 20px 18px; }
 </style>
@@ -2432,7 +2433,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
   <main class="app" id="wi-app" hidden>
     <div class="workspace">
-      <div class="subtab-strip" role="tablist" aria-label="Tracker views">
+      <div class="subtab-strip" role="tablist" aria-label="Tracker sections">
         <button class="subtab active" type="button" role="tab" id="wi-subtab-filters" data-subtab="filters" aria-selected="true" aria-controls="wi-panel-filters">Filters</button>
         <button class="subtab" type="button" role="tab" id="wi-subtab-summary" data-subtab="summary" aria-selected="false" aria-controls="wi-panel-summary">Summary</button>
         <button class="subtab" type="button" role="tab" id="wi-subtab-map" data-subtab="map" aria-selected="false" aria-controls="wi-panel-map">Map</button>
