@@ -2373,6 +2373,107 @@ svg.leaflet-image-layer.leaflet-interactive path {
 #panel-western-isles .ht-app .score-row { grid-template-columns: minmax(0, 1fr) auto; }
 #panel-western-isles .ht-app .score-row-bar { grid-column: 1 / -1; order: 3; }
 #panel-western-isles .ht-app .score-row-note { order: 4; }
+#panel-western-isles .ht-app .results-head { margin-bottom: 0; }
+#panel-western-isles .ht-app .results-controls { justify-content: space-between; }
+#panel-western-isles .ht-app .results-controls .view-toggle { margin-left: 0; }
+#panel-western-isles .ht-app .header-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 10px;
+      margin: 20px 0 4px;
+      padding: 11px 2px;
+      background: transparent;
+      border: 0;
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+#panel-western-isles .ht-app .header-strip strong { color: var(--ink); font-weight: 700; }
+#panel-western-isles .ht-app #wi-filters-panel { margin-bottom: 0; }
+#panel-western-isles .ht-app #wi-filters-panel .filter-rail {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+      gap: 16px;
+      align-items: start;
+    }
+#panel-western-isles .ht-app #wi-filters-panel .filters { display: block; position: static; }
+#panel-western-isles .ht-app #wi-filters-panel .toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(170px, 210px);
+      gap: 10px;
+      margin: 0;
+    }
+#panel-western-isles .ht-app .weights-card { padding: 22px; box-shadow: 0 7px 24px rgba(26, 28, 25, .05); }
+#panel-western-isles .ht-app .weights-card h2 { margin: 0 0 17px; font-size: 19px; line-height: 1.25; }
+#panel-western-isles .ht-app .weights-note { margin: -8px 0 0; color: var(--muted); font-size: 12px; }
+#panel-western-isles .ht-app .weights-card .slider-row:first-of-type { margin-top: 15px; }
+#panel-western-isles .ht-app .results-line {
+      align-items: flex-end;
+      margin: 14px 0 12px;
+      padding: 0 2px 10px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+#panel-western-isles .ht-app .results-line h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 3.4vw, 45px);
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -.015em;
+    }
+#panel-western-isles .ht-app .results-tools { flex-direction: column; align-items: flex-end; gap: 2px; }
+#panel-western-isles .ht-app #wi-results-label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+#panel-western-isles .ht-app #wi-results-label strong { color: var(--ink); }
+#panel-western-isles .ht-app .listing { position: relative; }
+#panel-western-isles .ht-app .rank {
+      position: absolute;
+      top: 20px;
+      right: 104px;
+      z-index: 1;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+#panel-western-isles .ht-app .place { padding-right: 118px; }
+#panel-western-isles .ht-app .fact.good { background: var(--soft); color: var(--ink); }
+#panel-western-isles .ht-app .listing-actions a { margin-left: auto; }
+#panel-western-isles .ht-app .details-btn { margin-left: 0; }
+#panel-western-isles .ht-app .planning-head { gap: 14px; }
+#panel-western-isles .ht-app .planning-status { font-size: 11px; }
+#panel-western-isles .ht-app .map-head { padding: 16px 20px; }
+#panel-western-isles .ht-app .map-head h2 { font-size: 18px; }
+#panel-western-isles .ht-app #wi-property-map { height: 360px; }
+#panel-western-isles .ht-app #wi-filters-panel .filter-rail { grid-template-columns: 1fr; }
+#panel-western-isles .ht-app .results-controls .view-toggle { flex: none; }
+#panel-western-isles .ht-app .view-toggle button { flex: none; }
+#panel-western-isles .ht-app #wi-filters-panel .toolbar { grid-template-columns: 1fr; }
+#panel-western-isles .ht-app .weights-card { padding: 18px; }
+#panel-western-isles .ht-app .rank { top: 18px; right: 85px; }
+#panel-western-isles .ht-app .place { padding-right: 96px; }
+#panel-western-isles .ht-app .results-line h2 { font-size: 34px; }
+#panel-western-isles .ht-app #wi-results-label { max-width: 52%; }
+#panel-western-isles .ht-app .listing-actions a { grid-column: 1 / -1; justify-content: center; margin-left: 0; }
+#panel-western-isles .ht-app .details-btn { grid-column: auto; }
+#panel-western-isles .ht-app #wi-property-map { height: 320px; }
+#panel-western-isles .ht-app .planning-head { display: block; }
+#panel-western-isles .ht-app .planning-status { display: block; margin-top: 3px; text-align: left; }
 </style>
 </head>
 <body>
@@ -2503,12 +2604,25 @@ svg.leaflet-image-layer.leaflet-interactive path {
             <button type="button" id="wi-view-map" aria-pressed="false">Map</button>
           </div>
         </div>
-        <p class="header-strip" id="wi-header-strip"></p>
       </div>
 
       <section id="wi-filters-panel" hidden>
-      <aside class="filters panel" aria-label="Filters and scoring">
-        <h2>Refine the shortlist</h2>
+      <div class="filter-rail">
+      <aside class="filters panel" aria-label="Filters">
+        <h2>Refine the longlist</h2>
+
+        <div class="filter-group">
+          <p class="filter-title">Find &amp; order</p>
+          <div class="toolbar">
+            <input id="wi-search" type="search" placeholder="Search place or description" aria-label="Search properties" />
+            <select id="wi-sort" aria-label="Sort properties">
+              <option value="score">Best fit</option>
+              <option value="price">Price: low to high</option>
+              <option value="beds">Most bedrooms</option>
+              <option value="island">Island</option>
+            </select>
+          </div>
+        </div>
 
         <div class="filter-group">
           <p class="filter-title">Island</p>
@@ -2531,15 +2645,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
         </div>
 
         <div class="filter-group">
-          <p class="filter-title">Scorecard weighting</p>
-          <div class="slider-row"><div class="slider-head"><span>Move-in condition</span><span id="wi-condition-out">4</span></div><input id="wi-condition-weight" type="range" min="1" max="5" value="4" /></div>
-          <div class="slider-row"><div class="slider-head"><span>Isolation</span><span id="wi-isolation-out">5</span></div><input id="wi-isolation-weight" type="range" min="1" max="5" value="5" /></div>
-          <div class="slider-row"><div class="slider-head"><span>Cat safety</span><span id="wi-road-out">5</span></div><input id="wi-road-weight" type="range" min="1" max="5" value="5" /></div>
-          <div class="slider-row"><div class="slider-head"><span>Workshop / build site</span><span id="wi-workshop-out">5</span></div><input id="wi-workshop-weight" type="range" min="1" max="5" value="5" /></div>
-          <div class="slider-row"><div class="slider-head"><span>Land buffer</span><span id="wi-landBuffer-out">5</span></div><input id="wi-landBuffer-weight" type="range" min="1" max="5" value="5" /></div>
-        </div>
-
-        <div class="filter-group">
           <p class="filter-title">Shortlist view</p>
           <div class="toggle-row">
             <button class="toggle-btn" id="wi-shortlist-toggle" type="button" aria-pressed="false">Shortlisted only</button>
@@ -2551,19 +2656,22 @@ svg.leaflet-image-layer.leaflet-interactive path {
           <button class="reset" id="wi-reset" type="button">Reset filters</button>
           <button class="refresh" id="wi-refresh" type="button">Refresh</button>
         </div>
-        <p class="session-note">Stars and hidden homes are saved on this device; filters and score changes last while the page is open.</p>
+        <p class="session-note">Shortlisted and hidden homes are saved on this device; filters and score changes last while the page is open.</p>
       </aside>
 
-        <div class="toolbar">
-          <input id="wi-search" type="search" placeholder="Search place or description" aria-label="Search properties" />
-          <select id="wi-sort" aria-label="Sort properties">
-            <option value="score">Best fit</option>
-            <option value="price">Price: low to high</option>
-            <option value="beds">Most bedrooms</option>
-            <option value="island">Island</option>
-          </select>
-        </div>
+      <aside class="panel weights-card" aria-label="Scorecard weighting">
+        <h2>Scorecard weighting</h2>
+        <p class="weights-note">Adjusts the ranking for this visit only.</p>
+        <div class="slider-row"><div class="slider-head"><span>Move-in condition</span><span id="wi-condition-out">4</span></div><input id="wi-condition-weight" type="range" min="1" max="5" value="4" /></div>
+        <div class="slider-row"><div class="slider-head"><span>Isolation</span><span id="wi-isolation-out">5</span></div><input id="wi-isolation-weight" type="range" min="1" max="5" value="5" /></div>
+        <div class="slider-row"><div class="slider-head"><span>Cat safety</span><span id="wi-road-out">5</span></div><input id="wi-road-weight" type="range" min="1" max="5" value="5" /></div>
+        <div class="slider-row"><div class="slider-head"><span>Workshop / build site</span><span id="wi-workshop-out">5</span></div><input id="wi-workshop-weight" type="range" min="1" max="5" value="5" /></div>
+        <div class="slider-row"><div class="slider-head"><span>Land buffer</span><span id="wi-landBuffer-out">5</span></div><input id="wi-landBuffer-weight" type="range" min="1" max="5" value="5" /></div>
+      </aside>
+      </div>
       </section>
+
+      <p class="header-strip" id="wi-header-strip"></p>
 
       <section id="wi-map-panel" hidden>
         <section class="map-panel panel" aria-labelledby="wi-map-title">
@@ -2571,7 +2679,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
             <h2 id="wi-map-title">Map overview</h2>
             <p>Markers use captured or locality-level positions</p>
           </div>
-          <div id="wi-property-map" aria-label="Map of shortlisted properties"></div>
+          <div id="wi-property-map" aria-label="Map of longlist properties"></div>
           <div class="map-fallback" id="wi-map-fallback">
             <p>The map could not load. Jump to a property instead.</p>
             <div class="map-fallback-list" id="wi-map-fallback-list"></div>
@@ -2581,7 +2689,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
       <div id="wi-list-view">
         <div class="results-line">
-          <h2>Shortlist</h2>
+          <h2>Longlist</h2>
           <div class="results-tools">
             <p id="wi-results-label">39 properties</p>
           </div>
@@ -4995,7 +5103,7 @@ const ROOT = document.getElementById("wi-app");
           <div class="listing-main">
             <div class="listing-head">
               <div>
-                <span class="rank">#${rank}</span>
+                <span class="rank">${String(rank).padStart(2, "0")}</span>
                 <p class="place">${p.island} · ${p.locality}</p>
                 <h3>${p.title}</h3>
                 <div class="price">${p.priceLabel} <small>· ${financing(p)}</small></div>
@@ -5011,10 +5119,10 @@ const ROOT = document.getElementById("wi-app");
             ${planningMarkup(p)}
           </div>
           <div class="listing-actions">
-            <a href="${p.url}" target="_blank" rel="noopener noreferrer">View source ${icons.out}</a>
-            <button class="star-btn ${starred ? "active" : ""}" type="button" data-star="${p.id}" aria-pressed="${starred}">${icons.star}${starred ? "Starred" : "Star"}</button>
-            <button class="hide-btn" type="button" data-hide="${p.id}">${hidden ? "Unhide" : "Hide"}</button>
+            <button class="star-btn ${starred ? "active" : ""}" type="button" data-star="${p.id}" aria-pressed="${starred}">${starred ? "★ Shortlisted" : "☆ Shortlist"}</button>
+            <button class="hide-btn" type="button" data-hide="${p.id}">${hidden ? "Unhide property" : "Hide property"}</button>
             <button class="details-btn" type="button" data-details="${p.id}" aria-expanded="false">Why this score</button>
+            <a href="${p.url}" target="_blank" rel="noopener noreferrer">View source ${icons.out}</a>
           </div>
           <div class="evidence">
             <div class="score-rows">${rows}</div>
@@ -5113,7 +5221,6 @@ const ROOT = document.getElementById("wi-app");
       if (state.beds !== 2) count += 1;
       if (state.equity !== 200000) count += 1;
       if (state.query.trim() !== "") count += 1;
-      if (state.sort !== "score") count += 1;
       if (state.shortlistOnly) count += 1;
       if (state.showHidden) count += 1;
       if (Object.keys(DEFAULT_WEIGHTS).some(key => state.weights[key] !== DEFAULT_WEIGHTS[key])) count += 1;
@@ -5130,15 +5237,19 @@ const ROOT = document.getElementById("wi-app");
         medianLabel = fmtGBP(median);
       }
       const statedLand = list.map(p => p.land).filter(acres => acres != null && acres > 0);
-      const largestLabel = statedLand.length ? `${Math.max(...statedLand)} acres` : "—";
-      document.getElementById("wi-header-strip").innerHTML = `<strong>${list.length}</strong> matching · <strong>${inBudget}</strong> in budget · median known price <strong>${medianLabel}</strong> · largest stated plot <strong>${largestLabel}</strong>`;
+      const largestLabel = statedLand.length ? `${Math.max(...statedLand)} ac` : "—";
+      const medianShort = medianLabel.replace(",000", "k");
+      const budgetLabel = Number.isFinite(state.budget) ? ` (≤ ${fmtGBP(state.budget)})` : "";
+      document.getElementById("wi-header-strip").innerHTML = `<strong>${list.length} matching</strong> · ${inBudget} in budget${budgetLabel} · Median known price <strong>${medianShort}</strong> · Largest stated plot <strong>${largestLabel}</strong>`;
     }
 
     function render() {
       const list = filtered();
       const grid = document.getElementById("wi-listing-grid");
       grid.innerHTML = list.length ? list.map((p, index) => card(p, index + 1)).join("") : `<div class="empty"><h3>No homes match those filters</h3><p>Try a higher budget, fewer bedrooms or another island.</p></div>`;
-      document.getElementById("wi-results-label").textContent = `${list.length} ${list.length === 1 ? "property" : "properties"}`;
+      const sortSelect = document.getElementById("wi-sort");
+      const sortText = state.sort === "score" ? "Best match first" : sortSelect.selectedOptions[0].text;
+      document.getElementById("wi-results-label").innerHTML = `<span><strong>${list.length}</strong> shown</span><span>${sortText} · ${list.length} of ${properties.length}</span>`;
       renderHeaderStrip(list);
       const activeCount = activeFilterCount();
       document.getElementById("wi-filters-toggle").textContent = activeCount ? `Filters (${activeCount} active)` : "Filters";
@@ -5157,7 +5268,7 @@ const ROOT = document.getElementById("wi-app");
         state.starred.has(id) ? state.starred.delete(id) : state.starred.add(id);
         saveIdSet(WI_STAR_KEY, state.starred);
         render();
-        showToast(state.starred.has(id) ? "Starred" : "Star removed");
+        showToast(state.starred.has(id) ? "Shortlisted" : "Removed from shortlist");
       }));
       ROOT.querySelectorAll("[data-hide]").forEach(btn => btn.addEventListener("click", () => {
         const id = Number(btn.dataset.hide);
@@ -5171,7 +5282,7 @@ const ROOT = document.getElementById("wi-app");
         const article = btn.closest(".listing");
         const open = article.classList.toggle("open");
         btn.setAttribute("aria-expanded", open);
-        btn.textContent = open ? "Hide detail" : "Why this score";
+        btn.textContent = open ? "Hide score breakdown" : "Why this score";
       }));
     }
 
